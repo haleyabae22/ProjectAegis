@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 99,
-    backgroundColor: colors.success
+    backgroundColor: colors.badge.nutrition
   },
   text: {
     fontSize: 13,

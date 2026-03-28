@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.4
   },
   iconFocused: {
-    color: colors.accent
+    color: colors.tertiaryFixed
   },
   label: {
     fontSize: 12,
