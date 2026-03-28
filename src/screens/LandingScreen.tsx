@@ -4,67 +4,74 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { BenefitCard } from "../components/BenefitCard";
 import { FundsFoundBanner } from "../components/FundsFoundBanner";
 import { LiveAgentBanner } from "../components/LiveAgentBanner";
-import { colors } from "../theme/colors";
+import { colors, radius, spacing } from "../theme/colors";
+import { typography } from "../theme/typography";
 
 export function LandingScreen() {
   return (
-    <ScrollView style={styles.page} contentContainerStyle={styles.content}>
-      <View style={styles.hero}>
-        <Text style={styles.headline}>Benefit Discovery</Text>
-        <Text style={styles.copy}>Find and track programs matched to your household profile.</Text>
-      </View>
+    <View style={styles.root}>
+      <ScrollView style={styles.page} contentContainerStyle={styles.content}>
 
-      <FundsFoundBanner total="$1,650/mo" />
-      <LiveAgentBanner />
+        {/* Hero Banner */}
+        <View style={styles.heroWrap}>
+          <FundsFoundBanner total="$1,650 / month" matchCount={3} />
+        </View>
 
-      <BenefitCard
-        icon="food"
-        title="SNAP"
-        amount="$800/mo"
-        description="Nutrition support based on income and household size"
-        matchPercent={94}
-      />
-      <BenefitCard
-        icon="energy"
-        title="LIHEAP"
-        amount="$350/mo"
-        description="Energy assistance with priority seasonal enrollment"
-        matchPercent={88}
-      />
-      <BenefitCard
-        icon="housing"
-        title="Rent Relief"
-        amount="$500/mo"
-        description="Housing cost reduction and emergency support"
-        matchPercent={82}
-      />
-    </ScrollView>
+        {/* Benefits Section */}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Available Benefits</Text>
+          <Text style={styles.sectionLink}>View All</Text>
+        </View>
+
+        <LiveAgentBanner />
+
+        <BenefitCard
+          icon="food"
+          title="SNAP Food Assistance"
+          amount="$450/mo"
+          description="Supplemental nutrition assistance program for fresh groceries and essentials."
+          matchPercent={98}
+          tags={["NUTRITIONAL AID", "98% MATCH"]}
+        />
+        <BenefitCard
+          icon="energy"
+          title="LIHEAP Energy Relief"
+          amount="$1,200/yr"
+          description="Low income home energy assistance to lower your monthly utility overhead."
+          matchPercent={88}
+          tags={["UTILITIES", "PRE-APPROVED"]}
+        />
+        <BenefitCard
+          icon="housing"
+          title="Rent Relief"
+          amount="$500/mo"
+          description="Housing cost reduction and emergency support."
+          matchPercent={82}
+          tags={["HOUSING"]}
+        />
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-    backgroundColor: colors.background
-  },
+  root: { flex: 1, backgroundColor: colors.surface },
+  page: { flex: 1 },
   content: {
-    padding: 16,
-    gap: 12
+    paddingHorizontal: spacing[4],
+    paddingTop: spacing[6],
+    paddingBottom: spacing[8],
+    gap: spacing[3],
   },
-  hero: {
-    backgroundColor: colors.primary,
-    borderRadius: 18,
-    padding: 16,
-    gap: 8
+  heroWrap: {
+    marginBottom: spacing[2],
   },
-  headline: {
-    color: colors.text.primary,
-    fontSize: 24,
-    fontWeight: "800"
+  sectionHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: spacing[2],
   },
-  copy: {
-    color: colors.text.secondary,
-    fontSize: 14,
-    lineHeight: 20
-  }
+  sectionTitle: { ...typography.headlineSm, color: colors.onSurface },
+  sectionLink: { ...typography.labelLg, color: colors.primary },
 });
