@@ -1,5 +1,3 @@
-import asyncio
-import json
 from dotenv import load_dotenv
 from db_api.helper_funcs import add_program, retrieve_used_urls, get_database_data
 
@@ -15,12 +13,20 @@ load_dotenv()
 # --- Database Specialist ---
 db_agent = Agent(
     name="database_specialist",
-    model="gemini-2.5-flash",
+    model="gemini-3.1-flash-lite-preview",
     description="Agent tasked with managing and querying the programs database.",
     instruction="""
         You are a Database Specialist Agent.
         Your job is to assist the user by reading from and writing to the programs database.
         Always confirm with the user when a new record has been successfully added.
+        
+        when adding to the data base you will get in json format
+        {
+            "url": "www.example.com",
+            "desc: "Funding for low income families",
+            "amount": 300,
+            "rate": "monthly"
+        }
     """,
     tools=[add_program, retrieve_used_urls, get_database_data]
 )
@@ -54,7 +60,7 @@ scraper_agent = Agent(
         4. Output the extracted data STRICTLY in JSON format. Do not add markdown formatting outside the JSON.
         only do 5 instances at a time
     """,
-    tools=[google_search]
+    tools=[google_search, call_db_agent]
 )
 
 
@@ -157,4 +163,4 @@ async def run_orchestrator(query: str):
     print("=" * 50 + "\n")
 
 
-root_agent = scraper_agent
+root_agent = db_agent
