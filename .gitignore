@@ -18,3 +18,5 @@ yarn-error.log*
 # IDE
 .vscode/*
 !.vscode/extensions.json
+backend/__pycache__
+backend/pipeline/__pycache__
