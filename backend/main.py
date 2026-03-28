@@ -9,7 +9,7 @@ load_dotenv()
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
 from google.genai.types import Content, Part
-from pipeline.agents import root_agent
+from pipeline.agent import root_agent
 from pipeline.models import ProgramSchema
 
 async def run_pipeline(user_query: str):
