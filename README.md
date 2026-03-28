@@ -1,75 +1,23 @@
-# Project Aegis
+# Project Aegis Monorepo
 
-Basic fully functional schema for a React Native app that runs on:
-- iOS
-- Android
-- Web
+This repository is organized for parallel frontend and backend development.
 
-This setup uses Expo + TypeScript and includes:
-- App shell and entrypoint
-- Native stack navigation
-- Shared state via React Context
-- Example API service layer
-- Reusable UI component
+## Top-level structure
 
-## Stack
+- frontend: Expo React Native app (web + iOS + Android)
+- backend: API/service code owned by backend team
 
-- Expo
-- React Native
-- React Native Web
-- TypeScript
-- React Navigation
+## Frontend quick start
 
-## Project Structure
+1. cd frontend
+2. npm install
+3. npm run start
 
-```text
-.
-|- App.tsx
-|- app.json
-|- babel.config.js
-|- package.json
-|- tsconfig.json
-|- .gitignore
-`- src/
-	|- components/
-	|  `- StatusCard.tsx
-	|- navigation/
-	|  `- RootNavigator.tsx
-	|- screens/
-	|  |- HomeScreen.tsx
-	|  `- SettingsScreen.tsx
-	|- services/
-	|  `- api.ts
-	|- store/
-	|  `- appStore.tsx
-	`- theme/
-		`- colors.ts
-```
+## Frontend build commands
 
-## Setup
+- npm run web
+- npm run build:web
 
-1. Install dependencies:
+## Backend quick start
 
-```bash
-npm install
-```
-
-2. Start the app:
-
-```bash
-npm run start
-```
-
-3. Run on your target:
-
-```bash
-npm run android
-npm run ios
-npm run web
-```
-
-## Notes
-
-- `src/services/api.ts` has a placeholder API base URL and simple fetch helper.
-- `src/store/appStore.tsx` provides shared app state (`count`, `themeName`) and actions.
-- The app is intentionally minimal and ready to extend.
+- Scaffold and run your backend inside backend based on your team's stack
