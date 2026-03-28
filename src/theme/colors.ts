@@ -1,20 +1,17 @@
 export const colors = {
-  light: {
-    background: "#F6F7FB",
-    surface: "#FFFFFF",
-    text: "#111827",
-    textMuted: "#6B7280",
-    primary: "#0F766E",
-    border: "#D1D5DB"
+  primary: "#1A2B5F",
+  accent: "#C9A84C",
+  background: "#F5F5F5",
+  surface: "#FFFFFF",
+  text: {
+    primary: "#FFFFFF",
+    secondary: "#A0AEC0"
   },
-  dark: {
-    background: "#0B1020",
-    surface: "#111827",
-    text: "#F3F4F6",
-    textMuted: "#9CA3AF",
-    primary: "#5EEAD4",
-    border: "#374151"
+  success: "#48BB78",
+  badge: {
+    nutrition: "#68D391",
+    energy: "#F6AD55"
   }
-};
+} as const;
 
-export type ThemeName = keyof typeof colors;
+export type AppColors = typeof colors;
