@@ -19,11 +19,12 @@ import { typography } from "../theme/typography";
 type Props = NativeStackScreenProps<HomeStackParamList, "Landing">;
 
 export function LandingScreen({ navigation }: Props) {
-  const { height } = useWindowDimensions();
+  const { width } = useWindowDimensions();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [zipCode, setZipCode] = useState("");
+  const isWideLayout = width >= 860;
 
   const canSubmit = fullName.trim().length > 0 && email.trim().length > 0;
 
@@ -39,10 +40,8 @@ export function LandingScreen({ navigation }: Props) {
   return (
     <View style={styles.root}>
       <ScrollView style={styles.page} contentContainerStyle={styles.content}>
-        {/* Hero Section with Navy Background */}
         <View style={styles.heroZone}>
           <View style={styles.heroContainer}>
-            {/* Logo Section - Left Side */}
             <View style={styles.logoSection}>
               <View style={styles.logoPlaceholder}>
                 <Image
@@ -53,58 +52,55 @@ export function LandingScreen({ navigation }: Props) {
               </View>
             </View>
 
-            {/* Title & Subtitle Section - Right Side */}
             <View style={styles.titleSection}>
               <Text style={styles.mainTitle}>Aegis</Text>
-              <Text style={styles.subtitle}>Protect Your Future Today</Text>
+              <Text style={styles.subtitle}>Service intelligence for benefits, guidance, and action.</Text>
             </View>
           </View>
 
-          {/* Button Below */}
           <Pressable style={styles.ctaButton} onPress={() => setIsFormOpen(true)}>
             <Text style={styles.ctaButtonText}>Search Now!</Text>
           </Pressable>
         </View>
 
-        {/* White Content Section with Alternating Placeholders */}
         <View style={styles.contentSection}>
-          {/* Paragraph 1 - Left */}
-          <View style={styles.paragraphBlock}>
-            <Text style={styles.paragraphTitle}>Benefits Overview</Text>
-            <Text style={styles.paragraphText}>
-              Discover how Aegis can help you navigate your service options and find the benefits you deserve. Our comprehensive analysis ensures you never miss an opportunity.
-            </Text>
+          <View style={[styles.contentRow, !isWideLayout && styles.contentRowStack]}>
+            <View style={styles.paragraphBlock}>
+              <Text style={styles.paragraphTitle}>Benefits Overview</Text>
+              <Text style={styles.paragraphText}>
+                Placeholder copy: this section explains how Aegis scans your profile, identifies benefit opportunities,
+                and provides a clear summary to help you take action with confidence.
+              </Text>
+            </View>
+            <View style={styles.imagePlaceholder}>
+              <Text style={styles.imagePlaceholderText}>Image Placeholder 1</Text>
+            </View>
           </View>
 
-          {/* Image Placeholder 1 - Right */}
-          <View style={styles.imagePlaceholder}>
-            <Text style={styles.imagePlaceholderText}>Benefits Image</Text>
+          <View style={[styles.contentRow, styles.contentRowReverse, !isWideLayout && styles.contentRowStack]}>
+            <View style={styles.paragraphBlock}>
+              <Text style={styles.paragraphTitle}>Personalized Recommendations</Text>
+              <Text style={styles.paragraphText}>
+                Placeholder copy: this area highlights tailored programs, estimated monthly impact, and what documents
+                are needed next so users can quickly move from discovery to enrollment.
+              </Text>
+            </View>
+            <View style={styles.imagePlaceholder}>
+              <Text style={styles.imagePlaceholderText}>Image Placeholder 2</Text>
+            </View>
           </View>
 
-          {/* Paragraph 2 - Right */}
-          <View style={styles.paragraphBlock}>
-            <Text style={styles.paragraphTitle}>Personalized Analysis</Text>
-            <Text style={styles.paragraphText}>
-              Our intelligent system analyzes your profile to match you with relevant services and benefits tailored to your unique situation and eligibility requirements.
-            </Text>
-          </View>
-
-          {/* Image Placeholder 2 - Left */}
-          <View style={styles.imagePlaceholder}>
-            <Text style={styles.imagePlaceholderText}>Analysis Image</Text>
-          </View>
-
-          {/* Paragraph 3 - Left */}
-          <View style={styles.paragraphBlock}>
-            <Text style={styles.paragraphTitle}>Expert Support</Text>
-            <Text style={styles.paragraphText}>
-              Connect with our dedicated service specialists who guide you through every step. We're committed to ensuring you maximize your benefits and receive the support you need.
-            </Text>
-          </View>
-
-          {/* Image Placeholder 3 - Right */}
-          <View style={styles.imagePlaceholder}>
-            <Text style={styles.imagePlaceholderText}>Support Image</Text>
+          <View style={[styles.contentRow, !isWideLayout && styles.contentRowStack]}>
+            <View style={styles.paragraphBlock}>
+              <Text style={styles.paragraphTitle}>Guided Support</Text>
+              <Text style={styles.paragraphText}>
+                Placeholder copy: this section can showcase support channels, live expert availability, and step-by-step
+                follow-up so users know exactly what to do after they receive results.
+              </Text>
+            </View>
+            <View style={styles.imagePlaceholder}>
+              <Text style={styles.imagePlaceholderText}>Image Placeholder 3</Text>
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -175,11 +171,12 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#001f3f",
     paddingHorizontal: spacing[6],
-    paddingVertical: spacing[8],
+    paddingTop: spacing[8],
+    paddingBottom: spacing[8],
     justifyContent: "center",
     alignItems: "center",
     gap: spacing[6],
-    minHeight: 380
+    minHeight: 420
   },
   heroContainer: {
     width: "100%",
@@ -195,10 +192,10 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   logoPlaceholder: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: "#D4AF37",
+    width: 172,
+    height: 172,
+    borderRadius: 86,
+    backgroundColor: "#002061",
     justifyContent: "center",
     alignItems: "center",
     shadowColor: "#000",
@@ -219,26 +216,28 @@ const styles = StyleSheet.create({
   titleSection: {
     flex: 1,
     justifyContent: "center",
-    gap: spacing[2]
+    gap: spacing[2],
+    paddingLeft: spacing[2]
   },
   mainTitle: {
     ...typography.displayLg,
     color: "#D4AF37",
-    fontSize: 56,
+    fontSize: 62,
     fontWeight: "700",
-    letterSpacing: 1.2
+    letterSpacing: 1.4
   },
   subtitle: {
     ...typography.bodyMd,
     color: "#ffffff",
-    fontSize: 16,
+    fontSize: 18,
+    maxWidth: 520,
     opacity: 0.9
   },
   ctaButton: {
-    width: "88%",
+    width: 260,
     backgroundColor: "#D4AF37",
     borderRadius: radius.lg,
-    minHeight: 52,
+    minHeight: 54,
     alignItems: "center",
     justifyContent: "center",
     shadowColor: "#000",
@@ -256,11 +255,25 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#ffffff",
     paddingHorizontal: spacing[4],
-    paddingVertical: spacing[8],
-    gap: spacing[6]
+    paddingTop: spacing[8],
+    paddingBottom: spacing[12],
+    gap: spacing[8]
+  },
+  contentRow: {
+    flexDirection: "row",
+    alignItems: "stretch",
+    gap: spacing[4]
+  },
+  contentRowReverse: {
+    flexDirection: "row-reverse"
+  },
+  contentRowStack: {
+    flexDirection: "column"
   },
   paragraphBlock: {
-    gap: spacing[2]
+    flex: 1,
+    gap: spacing[2],
+    justifyContent: "center"
   },
   paragraphTitle: {
     ...typography.headlineSm,
@@ -273,8 +286,8 @@ const styles = StyleSheet.create({
     lineHeight: 24
   },
   imagePlaceholder: {
-    width: "100%",
-    height: 200,
+    flex: 1,
+    minHeight: 220,
     backgroundColor: colors.surfaceContainerLowest,
     borderRadius: radius.md,
     justifyContent: "center",

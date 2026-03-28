@@ -1,15 +1,16 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { createBottomTabNavigator, BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
 
 import { LandingScreen } from "../screens/LandingScreen";
-import { ServiceAnalysisReportScreen } from "../screens/ServiceAnalysisReportScreen";
 import { ImpactDashboardScreen } from "../screens/ImpactDashboardScreen";
 import { ProfileScreen } from "../screens/ProfileScreen";
-import { colors, radius } from "../theme/colors";
+import { ServiceAnalysisReportScreen } from "../screens/ServiceAnalysisReportScreen";
+import { colors, radius, spacing } from "../theme/colors";
+import { typography } from "../theme/typography";
 
 export type AppTabParamList = {
   Home: undefined;
@@ -42,91 +43,104 @@ function HomeStackNavigator() {
   );
 }
 
+function AppTabBar(props: BottomTabBarProps) {
+  const activeRoute = props.state.routes[props.state.index];
+
+  if (activeRoute.name === "Home") {
+    const focusedHomeRoute = getFocusedRouteNameFromRoute(activeRoute) ?? "Landing";
+    if (focusedHomeRoute === "Landing") {
+      return null;
+    }
+  }
+
+  return (
+    <View style={styles.tabBarWrap}>
+      {props.state.routes.map((route, index) => {
+        const isFocused = props.state.index === index;
+        const descriptor = props.descriptors[route.key];
+        const iconColor = isFocused ? colors.onPrimary : colors.onSurfaceVariant;
+
+        const onPress = () => {
+          const event = props.navigation.emit({
+            type: "tabPress",
+            target: route.key,
+            canPreventDefault: true
+          });
+
+          if (!isFocused && !event.defaultPrevented) {
+            props.navigation.navigate(route.name);
+          }
+        };
+
+        return (
+          <Pressable key={route.key} style={styles.tabItem} onPress={onPress}>
+            <View style={isFocused ? styles.activePill : styles.inactivePill}>
+              {descriptor.options.tabBarIcon?.({
+                focused: isFocused,
+                color: iconColor,
+                size: 20
+              })}
+            </View>
+            <Text style={[styles.tabLabel, { color: isFocused ? colors.primary : colors.onSurfaceVariant }]}>
+              {String(descriptor.options.tabBarLabel ?? route.name)}
+            </Text>
+          </Pressable>
+        );
+      })}
+    </View>
+  );
+}
+
 export function AppNavigator() {
   return (
     <Tab.Navigator
+      tabBar={(props: BottomTabBarProps) => <AppTabBar {...props} />}
       screenOptions={{
         headerShown: false,
-        tabBarStyle: {
-          position: "absolute",
-          backgroundColor: "rgba(244, 250, 255, 0.80)",
-          borderTopWidth: 0,
-          borderTopLeftRadius: radius.xl,
-          borderTopRightRadius: radius.xl,
-          elevation: 0,
-          shadowOpacity: 0,
-        },
         tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.onSurfaceVariant,
+        tabBarInactiveTintColor: colors.onSurfaceVariant
       }}
     >
-      {/* Home Tab */}
       <Tab.Screen
         name="Home"
         component={HomeStackNavigator}
-        options={({ route }) => {
-          const focusedRoute = getFocusedRouteNameFromRoute(route) ?? "Landing";
-          const showTabBar = focusedRoute === "ServiceAnalysisReport";
-
-          return {
-            tabBarLabel: "Home",
-            tabBarStyle: showTabBar
-              ? {
-                  position: "absolute",
-                  backgroundColor: "rgba(244, 250, 255, 0.80)",
-                  borderTopWidth: 0,
-                  borderTopLeftRadius: radius.xl,
-                  borderTopRightRadius: radius.xl,
-                  elevation: 0,
-                  shadowOpacity: 0
-                }
-              : { display: "none" },
-            tabBarIcon: ({ focused, color, size }) => (
-              <View style={focused ? styles.activePill : undefined}>
-                <Ionicons
-                  name={focused ? "home" : "home-outline"}
-                  size={size}
-                  color={focused ? colors.onPrimary : color}
-                />
-              </View>
-            )
-          };
+        options={{
+          tabBarLabel: "Home",
+          tabBarIcon: ({ focused, color, size }: { focused: boolean; color: string; size: number }) => (
+            <Ionicons
+              name={focused ? "home" : "home-outline"}
+              size={size}
+              color={color}
+            />
+          )
         }}
       />
-
-      {/* Security Tab */}
       <Tab.Screen
         name="Security"
         component={ImpactDashboardScreen}
         options={{
           tabBarLabel: "Security",
-          tabBarIcon: ({ focused, color, size }) => (
-            <View style={focused ? styles.activePill : undefined}>
-              <Ionicons
-                name={focused ? "shield-checkmark" : "shield-checkmark-outline"}
-                size={size}
-                color={focused ? colors.onPrimary : color}
-              />
-            </View>
-          ),
+          tabBarIcon: ({ focused, color, size }: { focused: boolean; color: string; size: number }) => (
+            <Ionicons
+              name={focused ? "shield-checkmark" : "shield-checkmark-outline"}
+              size={size}
+              color={color}
+            />
+          )
         }}
       />
-
-      {/* Profile Tab */}
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
           tabBarLabel: "Profile",
-          tabBarIcon: ({ focused, color, size }) => (
-            <View style={focused ? styles.activePill : undefined}>
-              <Ionicons
-                name={focused ? "person" : "person-outline"}
-                size={size}
-                color={focused ? colors.onPrimary : color}
-              />
-            </View>
-          ),
+          tabBarIcon: ({ focused, color, size }: { focused: boolean; color: string; size: number }) => (
+            <Ionicons
+              name={focused ? "person" : "person-outline"}
+              size={size}
+              color={color}
+            />
+          )
         }}
       />
     </Tab.Navigator>
@@ -134,9 +148,32 @@ export function AppNavigator() {
 }
 
 const styles = StyleSheet.create({
+  tabBarWrap: {
+    flexDirection: "row",
+    paddingHorizontal: spacing[4],
+    paddingTop: spacing[2],
+    paddingBottom: spacing[3],
+    backgroundColor: "rgba(244, 250, 255, 0.96)",
+    borderTopWidth: 1,
+    borderTopColor: colors.outlineVariant
+  },
+  tabItem: {
+    flex: 1,
+    alignItems: "center",
+    gap: spacing[1]
+  },
   activePill: {
     backgroundColor: colors.primary,
     borderRadius: radius.md,
-    padding: 6,
+    paddingHorizontal: spacing[2],
+    paddingVertical: spacing[1]
   },
+  inactivePill: {
+    borderRadius: radius.md,
+    paddingHorizontal: spacing[2],
+    paddingVertical: spacing[1]
+  },
+  tabLabel: {
+    ...typography.labelSm
+  }
 });
