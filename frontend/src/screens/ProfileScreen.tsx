@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 
-import { colors } from "../theme/colors";
-
 export function ProfileScreen() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [fullName, setFullName] = useState("Jordan Rivera");
@@ -16,8 +14,6 @@ export function ProfileScreen() {
     <View style={styles.page}>
       <ScrollView style={styles.scrollView}>
         <View style={styles.card}>
-          <Text style={styles.title}>User Profile</Text>
-
           <View style={styles.fieldContainer}>
             <Text style={styles.fieldLabel}>Full Name</Text>
             <Text style={styles.field}>{fullName}</Text>
@@ -120,10 +116,10 @@ export function ProfileScreen() {
               />
 
               <View style={styles.modalActions}>
-                <Pressable style={styles.buttonGhost} onPress={() => setIsModalOpen(false)}>
+                <Pressable style={[styles.buttonGhost, styles.modalActionButton]} onPress={() => setIsModalOpen(false)}>
                   <Text style={styles.buttonGhostText}>Cancel</Text>
                 </Pressable>
-                <Pressable style={styles.buttonPrimary} onPress={() => setIsModalOpen(false)}>
+                <Pressable style={[styles.buttonPrimary, styles.modalPrimaryButton, styles.modalActionButton]} onPress={() => setIsModalOpen(false)}>
                   <Text style={styles.buttonPrimaryText}>Save</Text>
                 </Pressable>
               </View>
@@ -147,14 +143,10 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#002061",
     borderRadius: 16,
+    borderWidth: 2,
+    borderColor: "#D4AF37",
     padding: 16,
     gap: 12
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "800",
-    color: "#D4AF37",
-    marginBottom: 8
   },
   fieldContainer: {
     gap: 4,
@@ -257,6 +249,12 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     gap: 10,
     marginTop: 24,
+  },
+  modalActionButton: {
+    flex: 1,
+  },
+  modalPrimaryButton: {
+    marginTop: 0,
   },
   buttonGhost: {
     borderWidth: 2,

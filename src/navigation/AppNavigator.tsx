@@ -26,6 +26,30 @@ export type HomeStackParamList = {
 const Tab = createBottomTabNavigator<AppTabParamList>();
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
+const sharedHeaderOptions = {
+  headerStyle: {
+    backgroundColor: "#001f3f",
+    height: 120
+  },
+  headerTitleAlign: "left" as const,
+  headerTintColor: "#D4AF37",
+  headerTitleStyle: {
+    ...typography.headlineSm,
+    color: "#D4AF37",
+    fontWeight: "700",
+    fontSize: 50
+  },
+  headerTitleContainerStyle: {
+    paddingTop: 18,
+    paddingLeft: 16
+  },
+  headerLeftContainerStyle: {
+    paddingTop: 18,
+    paddingLeft: 8
+  },
+  headerShadowVisible: false
+};
+
 function HomeStackNavigator() {
   return (
     <HomeStack.Navigator>
@@ -39,15 +63,7 @@ function HomeStackNavigator() {
         component={ServiceAnalysisReportScreen}
         options={{
           title: "Service Analysis Report",
-          headerStyle: {
-            backgroundColor: "#001f3f"
-          },
-          headerTintColor: "#D4AF37",
-          headerTitleStyle: {
-            color: "#D4AF37",
-            fontWeight: "700"
-          },
-          headerShadowVisible: false
+          ...sharedHeaderOptions
         }}
       />
     </HomeStack.Navigator>
@@ -130,6 +146,9 @@ export function AppNavigator() {
         name="Security"
         component={ImpactDashboardScreen}
         options={{
+          headerShown: true,
+          title: "Impact Statement",
+          ...sharedHeaderOptions,
           tabBarLabel: "Security",
           tabBarIcon: ({ focused, color, size }: { focused: boolean; color: string; size: number }) => (
             <Ionicons
@@ -144,6 +163,9 @@ export function AppNavigator() {
         name="Profile"
         component={ProfileScreen}
         options={{
+          headerShown: true,
+          title: "User Profile",
+          ...sharedHeaderOptions,
           tabBarLabel: "Profile",
           tabBarIcon: ({ focused, color, size }: { focused: boolean; color: string; size: number }) => (
             <Ionicons

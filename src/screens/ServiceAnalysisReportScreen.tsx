@@ -4,15 +4,13 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { BenefitCard } from "../components/BenefitCard";
 import { FundsFoundBanner } from "../components/FundsFoundBanner";
 import { LiveAgentBanner } from "../components/LiveAgentBanner";
-import { colors, spacing } from "../theme/colors";
+import { spacing } from "../theme/colors";
 import { typography } from "../theme/typography";
 
 export function ServiceAnalysisReportScreen() {
   return (
     <View style={styles.root}>
       <ScrollView style={styles.page} contentContainerStyle={styles.content}>
-        <Text style={styles.pageTitle}>Service Analysis Report</Text>
-
         <View style={styles.heroWrap}>
           <FundsFoundBanner total="$1,650 / month" matchCount={3} />
         </View>
@@ -61,13 +59,6 @@ const styles = StyleSheet.create({
     paddingTop: spacing[6],
     paddingBottom: spacing[8],
     gap: spacing[3]
-  },
-  pageTitle: {
-    ...typography.headlineMd,
-    color: "#D4AF37",
-    marginBottom: spacing[2],
-    fontSize: 28,
-    fontWeight: "700"
   },
   heroWrap: {
     marginBottom: spacing[2]

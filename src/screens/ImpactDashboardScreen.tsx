@@ -157,7 +157,6 @@ export function ImpactDashboardScreen() {
     >
       {/* ── Hero header ── */}
       <View style={styles.hero}>
-        <Text style={styles.title}>Impact Dashboard</Text>
         <Text style={styles.subtitle}>
           Track your security score and active benefit pipeline.
         </Text>
@@ -257,30 +256,24 @@ const styles = StyleSheet.create({
 
   // Hero
   hero: {
-    backgroundColor: NAVY_MID,
-    padding: spacing[12],
-    paddingTop: spacing[12],
+    backgroundColor: NAVY,
+    paddingHorizontal: spacing[4],
+    paddingVertical: spacing[5],
     borderBottomLeftRadius: radius.xl,
     borderBottomRightRadius: radius.xl,
-    marginBottom: -20,
-    gap: spacing[2],
-    borderBottomWidth: 2,
-    borderBottomColor: GOLD,
-  },
-  title: {
-    ...typography.headlineMd,
-    color: GOLD,
-    fontWeight: "700",
+    marginBottom: spacing[2],
+    gap: spacing[1],
   },
   subtitle: {
     ...typography.bodyMd,
-    color: ON_NAVY_M,
+    color: ON_NAVY,
+    opacity: 0.9,
   },
 
   // Metric cards section
   section: {
     backgroundColor: NAVY,
-    paddingTop: spacing[8] + 20,
+    paddingTop: spacing[4],
     paddingHorizontal: spacing[4],
     paddingBottom: spacing[6],
   },

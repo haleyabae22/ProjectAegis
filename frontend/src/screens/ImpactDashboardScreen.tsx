@@ -11,7 +11,6 @@ export function ImpactDashboardScreen() {
 
       {/* Hero header — primary blue with xl radius overlap */}
       <View style={styles.hero}>
-        <Text style={styles.title}>Impact Dashboard</Text>
         <Text style={styles.subtitle}>
           Track your security score and active benefit pipeline.
         </Text>
@@ -103,28 +102,24 @@ const styles = StyleSheet.create({
 
   // Hero: primary blue, bleeds edge-to-edge, overlaps next section by 20px
   hero: {
-    backgroundColor: colors.primary,
-    padding: spacing[12],
-    paddingTop: spacing[12],
+    backgroundColor: "#001f3f",
+    paddingHorizontal: spacing[4],
+    paddingVertical: spacing[5],
     borderBottomLeftRadius: radius.xl,
     borderBottomRightRadius: radius.xl,
-    marginBottom: -20,                        // architectural overlap per spec
-    gap: spacing[2],
-  },
-  title: {
-    ...typography.headlineMd,
-    color: colors.onPrimary,
+    marginBottom: spacing[2],
+    gap: spacing[1],
   },
   subtitle: {
     ...typography.bodyMd,
-    color: colors.onPrimary,
-    opacity: 0.8,
+    color: "#ffffff",
+    opacity: 0.9,
   },
 
   // Level 1 section — background shift, never a border
   section: {
     backgroundColor: colors.surfaceContainerLow,
-    paddingTop: spacing[8] + 20,              // extra 20px to clear the overlap
+    paddingTop: spacing[4],
     paddingHorizontal: spacing[4],
     paddingBottom: spacing[6],
   },
