@@ -54,7 +54,7 @@ export function ServiceAnalysisReportScreen() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: colors.surface },
+  root: { flex: 1, backgroundColor: "#001f3f" },
   page: { flex: 1 },
   content: {
     paddingHorizontal: spacing[4],
@@ -64,8 +64,10 @@ const styles = StyleSheet.create({
   },
   pageTitle: {
     ...typography.headlineMd,
-    color: colors.onSurface,
-    marginBottom: spacing[2]
+    color: "#D4AF37",
+    marginBottom: spacing[2],
+    fontSize: 28,
+    fontWeight: "700"
   },
   heroWrap: {
     marginBottom: spacing[2]
@@ -76,6 +78,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: spacing[2]
   },
-  sectionTitle: { ...typography.headlineSm, color: colors.onSurface },
-  sectionLink: { ...typography.labelLg, color: colors.primary }
+  sectionTitle: { ...typography.headlineSm, color: "#D4AF37", fontWeight: "700" },
+  sectionLink: { ...typography.labelLg, color: "#D4AF37" }
 });

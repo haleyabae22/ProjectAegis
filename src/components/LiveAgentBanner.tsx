@@ -15,9 +15,9 @@ export function LiveAgentBanner() {
 const styles = StyleSheet.create({
   container: {
     borderRadius: 12,
-    borderWidth: 1,
-    borderColor: "#D8E1F2",
-    backgroundColor: "#EAF0FF",
+    borderWidth: 2,
+    borderColor: "#D4AF37",
+    backgroundColor: "#002061",
     padding: 12,
     flexDirection: "row",
     alignItems: "center",
@@ -27,11 +27,11 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 99,
-    backgroundColor: colors.badge.nutrition
+    backgroundColor: "#D4AF37"
   },
   text: {
     fontSize: 13,
-    color: colors.primary,
+    color: "#D4AF37",
     flex: 1,
     fontWeight: "600"
   }

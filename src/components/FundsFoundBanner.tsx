@@ -39,22 +39,24 @@ export function FundsFoundBanner({ total, matchCount = 3 }: Props) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.primaryContainer,
+    backgroundColor: "#001f3f",
     borderRadius: radius.xl,
     padding: spacing[6],
     gap: spacing[3],
     marginBottom: spacing[4],
+    borderWidth: 2,
+    borderColor: "#D4AF37",
   },
   badge: {
     alignSelf: "flex-start",
-    backgroundColor: "rgba(255,255,255,0.18)",
+    backgroundColor: "#D4AF37",
     borderRadius: radius.sm,
     paddingHorizontal: spacing[2],
     paddingVertical: 4,
   },
   badgeText: {
     ...typography.labelSm,
-    color: colors.onPrimary,
+    color: "#001f3f",
     fontSize: 10,
     letterSpacing: 1,
     fontWeight: "700",
@@ -65,14 +67,14 @@ const styles = StyleSheet.create({
     lineHeight: 38,
   },
   headlineWhite: {
-    color: colors.onPrimary,
+    color: "#ffffff",
   },
   headlineGold: {
-    color: colors.tertiaryFixed,
+    color: "#D4AF37",
   },
   subtitle: {
     ...typography.bodyMd,
-    color: "rgba(255,255,255,0.75)",
+    color: "rgba(255,255,255,0.85)",
     lineHeight: 20,
   },
   cta: {
@@ -80,14 +82,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: spacing[2],
-    backgroundColor: colors.tertiary,
+    backgroundColor: "#D4AF37",
     borderRadius: radius.md,
     paddingVertical: spacing[3],
     marginTop: spacing[1],
   },
   ctaText: {
     ...typography.labelLg,
-    color: colors.onPrimary,
+    color: "#001f3f",
     fontSize: 15,
   },
 });

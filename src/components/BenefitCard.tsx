@@ -14,15 +14,15 @@ const ICON_MAP: Record<string, keyof typeof Ionicons.glyphMap> = {
 };
 
 const ICON_BG: Record<string, string> = {
-  food: "#e6f4ea",
-  energy: "#fff8e1",
-  housing: "#e8f0fe",
+  food: "#002061",
+  energy: "#002061",
+  housing: "#002061",
 };
 
 const ICON_FG: Record<string, string> = {
-  food: "#2e7d32",
-  energy: "#f57c00",
-  housing: "#1a73e8",
+  food: "#D4AF37",
+  energy: "#D4AF37",
+  housing: "#D4AF37",
 };
 
 // ── Tag config ─────────────────────────────────────────────
@@ -34,9 +34,9 @@ const CATEGORY_LABEL: Record<string, string> = {
 
 // Match-percent → pill color
 function matchPillStyle(pct: number) {
-  if (pct >= 90) return { bg: "#e6f4ea", fg: "#2e7d32" }; // green
-  if (pct >= 80) return { bg: "#e8f0fe", fg: "#1a73e8" }; // blue
-  return { bg: "#fff8e1", fg: "#f57c00" };                // amber
+  if (pct >= 90) return { bg: "#002061", fg: "#D4AF37" };
+  if (pct >= 80) return { bg: "#002061", fg: "#D4AF37" };
+  return { bg: "#002061", fg: "#D4AF37" };
 }
 
 // ── Component ───────────────────────────────────────────────
@@ -84,20 +84,20 @@ export function BenefitCard({
         <View style={styles.tagRow}>
           {tags
             ? tags.map((tagText, i) => (
-                <View key={i} style={[styles.tag, { backgroundColor: "#eef2ff" }]}>
-                  <Text style={[styles.tagText, { color: "#3b4bdb" }]}>{tagText}</Text>
+                <View key={i} style={[styles.tag, { backgroundColor: "#002061" }]}>
+                  <Text style={[styles.tagText, { color: "#D4AF37" }]}>{tagText}</Text>
                 </View>
               ))
             : <>
-                <View style={[styles.tag, { backgroundColor: "#eef2ff" }]}>
-                  <Text style={[styles.tagText, { color: "#3b4bdb" }]}>{CATEGORY_LABEL[icon] ?? "BENEFIT"}</Text>
+                <View style={[styles.tag, { backgroundColor: "#002061" }]}>
+                  <Text style={[styles.tagText, { color: "#D4AF37" }]}>{CATEGORY_LABEL[icon] ?? "BENEFIT"}</Text>
                 </View>
                 <View style={[styles.tag, { backgroundColor: pill.bg }]}>
                   <Text style={[styles.tagText, { color: pill.fg }]}>{matchPercent}% MATCH</Text>
                 </View>
                 {status && (
-                  <View style={[styles.tag, { backgroundColor: "#e6f4ea" }]}>
-                    <Text style={[styles.tagText, { color: "#2e7d32" }]}>{status.toUpperCase()}</Text>
+                  <View style={[styles.tag, { backgroundColor: "#002061" }]}>
+                    <Text style={[styles.tagText, { color: "#D4AF37" }]}>{status.toUpperCase()}</Text>
                   </View>
                 )}
               </>
@@ -110,13 +110,15 @@ export function BenefitCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.surfaceContainerLowest,
+    backgroundColor: "#002061",
     borderRadius: radius.lg,
     padding: 14,
     flexDirection: "row",
     alignItems: "flex-start",
     gap: 12,
     marginBottom: spacing[2],
+    borderWidth: 2,
+    borderColor: "#D4AF37",
     ...shadow,
   },
 
@@ -144,21 +146,22 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 15,
     fontWeight: "700",
-    color: colors.onSurface,
+    color: "#ffffff",
     flexShrink: 1,
   },
 
   amount: {
     fontSize: 15,
     fontWeight: "800",
-    color: colors.primary,
+    color: "#D4AF37",
     flexShrink: 0,
   },
 
   description: {
     fontSize: 12,
-    color: colors.onSurfaceVariant,
+    color: "#ffffff",
     lineHeight: 17,
+    opacity: 0.85,
   },
 
   tagRow: {

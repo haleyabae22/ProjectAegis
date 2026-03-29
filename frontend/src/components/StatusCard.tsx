@@ -28,7 +28,7 @@ export function StatusCard({
   const isGold = variant === "gold";
 
   // Dot color: use accent prop if explicitly passed, otherwise derive from variant
-  const dotColor = accent ?? (isGold ? colors.tertiaryContainer : colors.primary);
+  const dotColor = accent ?? (isGold ? "#D4AF37" : "#D4AF37");
 
   return (
     <View
@@ -36,12 +36,9 @@ export function StatusCard({
         styles.card,
         shadow,
         {
-          // "Gold" state = tertiaryFixed bg (#ffe16d) for "Found Money" dopamine hit
-          backgroundColor: isGold ? colors.tertiaryFixed : surface,
-          // "No-Line Rule" — no borderWidth by default.
-          // Only render the ghost border if an explicit border color is passed
-          // (e.g. high-sunlight accessibility fallback at 15% opacity)
-          borderWidth: 0,
+          backgroundColor: isGold ? "#D4AF37" : "#002061",
+          borderWidth: 2,
+          borderColor: "#D4AF37",
         },
       ]}
     >
@@ -54,7 +51,7 @@ export function StatusCard({
             styles.title,
             typography.labelLg,
             {
-              color: isGold ? colors.tertiary : text,
+              color: isGold ? "#001f3f" : "#D4AF37",
             },
           ]}
         >
@@ -65,7 +62,7 @@ export function StatusCard({
             styles.subtitle,
             typography.bodyMd,
             {
-              color: isGold ? colors.onSurface : textMuted,
+              color: isGold ? "#001f3f" : "#ffffff",
             },
           ]}
         >

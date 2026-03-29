@@ -51,10 +51,12 @@ export function BottomNav({ state, descriptors, navigation }: BottomTabBarProps)
 const styles = StyleSheet.create({
   wrapper: {
     flexDirection: "row",
-    backgroundColor: colors.primary,
+    backgroundColor: "#001f3f",
     paddingHorizontal: 8,
     paddingVertical: 10,
-    gap: 8
+    gap: 8,
+    borderTopWidth: 2,
+    borderTopColor: "#D4AF37"
   },
   tab: {
     flex: 1,
@@ -65,23 +67,23 @@ const styles = StyleSheet.create({
     gap: 2
   },
   tabFocused: {
-    backgroundColor: "#2A3C78"
+    backgroundColor: "#D4AF37"
   },
   icon: {
     fontSize: 11,
-    color: colors.text.secondary,
+    color: "#D4AF37",
     textTransform: "uppercase",
     letterSpacing: 0.4
   },
   iconFocused: {
-    color: colors.tertiaryFixed
+    color: "#001f3f"
   },
   label: {
     fontSize: 12,
     fontWeight: "600",
-    color: colors.text.secondary
+    color: "#D4AF37"
   },
   labelFocused: {
-    color: colors.text.primary
+    color: "#001f3f"
   }
 });

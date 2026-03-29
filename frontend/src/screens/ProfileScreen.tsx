@@ -138,14 +138,14 @@ export function ProfileScreen() {
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: "#001f3f",
     padding: 16
   },
   scrollView: {
     flex: 1,
   },
   card: {
-    backgroundColor: colors.surface,
+    backgroundColor: "#002061",
     borderRadius: 16,
     padding: 16,
     gap: 12
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "800",
-    color: colors.primary,
+    color: "#D4AF37",
     marginBottom: 8
   },
   fieldContainer: {
@@ -162,18 +162,18 @@ const styles = StyleSheet.create({
   fieldLabel: {
     fontSize: 12,
     fontWeight: "700",
-    color: colors.onSurfaceVariant,
+    color: "#D4AF37",
     textTransform: "uppercase",
     letterSpacing: 0.5,
   },
   field: {
-    color: "#45516C",
+    color: "#ffffff",
     fontSize: 15,
     fontWeight: "500",
   },
   buttonPrimary: {
     marginTop: 20,
-    backgroundColor: colors.primary,
+    backgroundColor: "#D4AF37",
     borderRadius: 10,
     minHeight: 44,
     alignItems: "center",
@@ -181,17 +181,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14
   },
   buttonPrimaryText: {
-    color: colors.text.primary,
+    color: "#001f3f",
     fontWeight: "700"
   },
   modalBackdrop: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.5)",
+    backgroundColor: "rgba(0,0,0,0.7)",
     justifyContent: "flex-end",
     padding: 0
   },
   modalCard: {
-    backgroundColor: colors.surface,
+    backgroundColor: "#001f3f",
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     padding: 24,
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     gap: 0
   },
   modalTitle: {
-    color: colors.primary,
+    color: "#D4AF37",
     fontSize: 20,
     fontWeight: "800",
     marginBottom: 20
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
   inputLabel: {
     fontSize: 12,
     fontWeight: "700",
-    color: colors.onSurfaceVariant,
+    color: "#D4AF37",
     textTransform: "uppercase",
     letterSpacing: 0.5,
     marginTop: 12,
@@ -215,14 +215,15 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#CBD5E1",
+    borderColor: "#D4AF37",
     borderRadius: 10,
     paddingHorizontal: 12,
     paddingVertical: 10,
     minHeight: 44,
-    backgroundColor: "#FCFCFC",
+    backgroundColor: "#002061",
     fontSize: 15,
-    color: colors.onSurface,
+    color: "#ffffff",
+    placeholderTextColor: "#9A7B1C"
   },
   choiceRow: {
     flexDirection: "row",
@@ -231,25 +232,25 @@ const styles = StyleSheet.create({
   },
   choiceButton: {
     flex: 1,
-    borderWidth: 1,
-    borderColor: "#CBD5E1",
+    borderWidth: 2,
+    borderColor: "#D4AF37",
     borderRadius: 10,
     paddingVertical: 10,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#FCFCFC",
+    backgroundColor: "#002061",
   },
   choiceButtonActive: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
+    backgroundColor: "#D4AF37",
+    borderColor: "#D4AF37",
   },
   choiceButtonText: {
     fontSize: 14,
     fontWeight: "600",
-    color: colors.onSurfaceVariant,
+    color: "#D4AF37",
   },
   choiceButtonTextActive: {
-    color: colors.text.primary,
+    color: "#001f3f",
   },
   modalActions: {
     flexDirection: "row",
@@ -258,17 +259,17 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   buttonGhost: {
-    borderWidth: 1,
-    borderColor: "#CBD5E1",
+    borderWidth: 2,
+    borderColor: "#D4AF37",
     borderRadius: 10,
     minHeight: 44,
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 20,
-    backgroundColor: "#FCFCFC",
+    backgroundColor: "transparent",
   },
   buttonGhostText: {
-    color: "#475569",
+    color: "#D4AF37",
     fontWeight: "700"
   }
 });

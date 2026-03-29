@@ -142,7 +142,7 @@ export function AppNavigator() {
             />
           )
         }}
-/>
+      />
     </Tab.Navigator>
   );
 }
