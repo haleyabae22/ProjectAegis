@@ -95,28 +95,40 @@ function AegisHero({ onStart }: { onStart: () => void }) {
             <Image source={MEDUSA} style={heroStyles.medallion} resizeMode="contain" />
           </Animated.View>
 
-          {/* Subtitle */}
-          <Text style={heroStyles.subtitle}>Welcome to Aegis</Text>
+          <View style={heroStyles.heroContentGroup}>
+            {/* Subtitle */}
+            <View style={heroStyles.titleWrap}>
+              <Text style={heroStyles.subtitlePrefix}>WELCOME TO</Text>
+              <Text style={heroStyles.subtitleMain}>AEGIS</Text>
+            </View>
 
-          {/* Divider */}
-          <View style={heroStyles.dividerRow}>
-            <View style={heroStyles.dividerLine} />
-            <View style={heroStyles.dividerDiamond} />
-            <View style={heroStyles.dividerLine} />
+            {/* Divider */}
+            <View style={heroStyles.dividerRow}>
+              <View style={heroStyles.dividerLine} />
+              <View style={heroStyles.dividerDiamond} />
+              <View style={heroStyles.dividerLine} />
+            </View>
+
+            {/* CTA Button */}
+            <Pressable
+              style={({ pressed: p }) => [heroStyles.button, p && heroStyles.buttonPressed]}
+              onPressIn={() => setPressed(true)}
+              onPressOut={() => setPressed(false)}
+              onPress={onStart}
+            >
+              <Text style={heroStyles.buttonText}>Start</Text>
+            </Pressable>
+
+            {/* Inscription */}
+            <Text
+              style={heroStyles.inscription}
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.8}
+            >
+              SERVICE * INTELLIGENCE * ACTION
+            </Text>
           </View>
-
-          {/* CTA Button */}
-          <Pressable
-            style={({ pressed: p }) => [heroStyles.button, p && heroStyles.buttonPressed]}
-            onPressIn={() => setPressed(true)}
-            onPressOut={() => setPressed(false)}
-            onPress={onStart}
-          >
-            <Text style={heroStyles.buttonText}>Start</Text>
-          </Pressable>
-
-          {/* Inscription */}
-          <Text style={heroStyles.inscription}>Service · Intelligence · Benefits · Action</Text>
         </View>
 
         {/* Right pillar (mirrored) */}
@@ -182,13 +194,37 @@ const heroStyles = StyleSheet.create({
     height: 500,
     borderRadius: 180,
   },
-  subtitle: {
+  heroContentGroup: {
+    alignItems: "center",
+    gap: 16,
+    marginTop: -52,
+  },
+  titleWrap: {
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 2,
+  },
+  subtitlePrefix: {
     color: GOLD_LIGHT,
     fontSize: 28,
     fontStyle: "italic",
     letterSpacing: 4,
+    textAlign: "center",
+    textTransform: "uppercase",
     fontFamily: "Georgia",
     textShadowColor: "rgba(212,175,55,0.6)",
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 10,
+  },
+  subtitleMain: {
+    color: GOLD,
+    fontSize: 64,
+    fontStyle: "italic",
+    letterSpacing: 8,
+    textAlign: "center",
+    textTransform: "uppercase",
+    fontFamily: "Georgia",
+    textShadowColor: "rgba(212,175,55,0.45)",
     textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 10,
   },
@@ -246,6 +282,10 @@ const heroStyles = StyleSheet.create({
     opacity: 0.65,
     fontFamily: "Georgia",
     marginTop: 4,
+    width: "100%",
+    maxWidth: 560,
+    textAlign: "center",
+    paddingHorizontal: 16,
   },
 });
 

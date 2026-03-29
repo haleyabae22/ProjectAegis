@@ -59,6 +59,8 @@ const cardStyles = StyleSheet.create({
     padding: spacing[4],
     minHeight: 96,
     justifyContent: "space-between",
+    borderWidth: 2,
+    borderColor: GOLD,
   },
   metricLabel: {
     ...typography.bodyMd,
@@ -266,8 +268,11 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     ...typography.bodyMd,
+    fontSize: 18,
     color: ON_NAVY,
     opacity: 0.9,
+    textAlign: "left",
+    marginLeft: 32,
   },
 
   // Metric cards section
@@ -292,8 +297,8 @@ const styles = StyleSheet.create({
     marginHorizontal: spacing[4],
     marginTop: spacing[4],
     gap: spacing[2],
-    borderWidth: 1,
-    borderColor: "rgba(212,175,55,0.2)",
+    borderWidth: 2,
+    borderColor: GOLD,
   },
   chartTitle: {
     ...typography.headlineSm,
@@ -319,8 +324,8 @@ const styles = StyleSheet.create({
     marginHorizontal: spacing[4],
     marginTop: spacing[4],
     gap: spacing[6],
-    borderWidth: 1,
-    borderColor: "rgba(212,175,55,0.2)",
+    borderWidth: 2,
+    borderColor: GOLD,
   },
   timelineTitle: {
     ...typography.headlineSm,

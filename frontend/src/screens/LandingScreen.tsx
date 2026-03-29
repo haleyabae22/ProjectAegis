@@ -61,15 +61,25 @@ export function LandingScreen({ navigation }: Props) {
               </View>
             </View>
 
-            <View style={styles.titleSection}>
-              <Text style={styles.mainTitle}>Aegis</Text>
-              <Text style={styles.subtitle}>Service intelligence for benefits, guidance, and action.</Text>
+            <View style={styles.heroTextCluster}>
+              <View style={styles.titleSection}>
+                <Text style={styles.subtitle}>WELCOME TO</Text>
+                <Text style={styles.mainTitle}>AEGIS</Text>
+              </View>
+
+              <Pressable style={styles.ctaButton} onPress={() => setIsFormOpen(true)}>
+                <Text style={styles.ctaButtonText}>Start</Text>
+              </Pressable>
+              <Text
+                style={styles.inscription}
+                numberOfLines={1}
+                adjustsFontSizeToFit
+                minimumFontScale={0.8}
+              >
+                SERVICE * INTELLIGENCE * ACTION
+              </Text>
             </View>
           </View>
-
-          <Pressable style={styles.ctaButton} onPress={() => setIsFormOpen(true)}>
-            <Text style={styles.ctaButtonText}>Search Now!</Text>
-          </Pressable>
         </View>
 
         <View style={styles.contentSection}>
@@ -249,6 +259,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     gap: spacing[6]
   },
+  heroTextCluster: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: spacing[3],
+    marginTop: -44,
+  },
   logoSection: {
     flex: 0,
     width: "25%",
@@ -280,20 +297,29 @@ const styles = StyleSheet.create({
   titleSection: {
     flex: 1,
     justifyContent: "center",
+    alignItems: "center",
     gap: spacing[2],
     paddingLeft: spacing[2]
   },
   mainTitle: {
     ...typography.displayLg,
     color: "#D4AF37",
-    fontSize: 62,
+    fontSize: 86,
+    fontStyle: "italic",
     fontWeight: "700",
-    letterSpacing: 1.4
+    letterSpacing: 7,
+    textAlign: "center",
+    textTransform: "uppercase"
   },
   subtitle: {
-    ...typography.bodyMd,
-    color: "#ffffff",
-    fontSize: 18,
+    ...typography.labelLg,
+    color: "#F5D76E",
+    fontSize: 24,
+    fontFamily: "Georgia",
+    fontStyle: "italic",
+    letterSpacing: 4,
+    textAlign: "center",
+    textTransform: "uppercase",
     maxWidth: 520,
     opacity: 0.9
   },
@@ -314,6 +340,19 @@ const styles = StyleSheet.create({
     ...typography.labelLg,
     color: "#001f3f",
     fontWeight: "600"
+  },
+  inscription: {
+    color: "#9A7B1C",
+    fontSize: 10,
+    letterSpacing: 4,
+    textTransform: "uppercase",
+    opacity: 0.75,
+    fontFamily: "Georgia",
+    marginTop: spacing[1],
+    textAlign: "center",
+    width: "100%",
+    maxWidth: 560,
+    paddingHorizontal: spacing[3],
   },
   contentSection: {
     width: "100%",

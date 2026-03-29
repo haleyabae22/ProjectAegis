@@ -112,8 +112,11 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     ...typography.bodyMd,
+    fontSize: 18,
     color: "#ffffff",
     opacity: 0.9,
+    textAlign: "left",
+    marginLeft: 32,
   },
 
   // Level 1 section — background shift, never a border
@@ -134,7 +137,8 @@ const styles = StyleSheet.create({
     padding: spacing[4],
     minHeight: 96,
     justifyContent: "space-between",
-    // NO borderWidth — no-line rule
+    borderWidth: 2,
+    borderColor: "#D4AF37",
   },
   metricLabel: {
     ...typography.bodyMd,
@@ -153,7 +157,8 @@ const styles = StyleSheet.create({
     marginHorizontal: spacing[4],
     marginTop: spacing[6],
     gap: spacing[6],                          // spacing replaces dividers
-    // NO borderWidth — no-line rule
+    borderWidth: 2,
+    borderColor: "#D4AF37",
   },
   timelineTitle: {
     ...typography.headlineSm,

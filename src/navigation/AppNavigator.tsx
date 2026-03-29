@@ -147,7 +147,7 @@ export function AppNavigator() {
         component={ImpactDashboardScreen}
         options={{
           headerShown: true,
-          title: "Impact Statement",
+          title: "Impact Dashboard",
           ...sharedHeaderOptions,
           tabBarLabel: "Security",
           tabBarIcon: ({ focused, color, size }: { focused: boolean; color: string; size: number }) => (

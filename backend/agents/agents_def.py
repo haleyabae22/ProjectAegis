@@ -83,7 +83,8 @@ scraper_agent = Agent(
         6. Output the extracted data STRICTLY in JSON format. Do not add markdown formatting outside the JSON.
         Only do 5 instances at a time.
     """,
-    tools=[AgentTool(url_search_agent), AgentTool(db_agent), scrape_url]
+    tools=[AgentTool(url_search_agent), AgentTool(db_agent), scrape_url],
+    generate_content_config=types.GenerateContentConfig(tool_config=my_tool_config)
 )
 
 # --- Validator Agent ---
@@ -105,7 +106,8 @@ validator_agent = Agent(
         - If the data is VALID: Use the `call_database_specialist` tool to pass the JSON data to the Database Specialist to save it. Return a success message.
         - If the data is INVALID: Do NOT save it. Return a detailed error message explaining what fields are missing or malformed.
     """,
-    tools=[AgentTool(db_agent)]
+    tools=[AgentTool(db_agent)],
+    generate_content_config=types.GenerateContentConfig(tool_config=my_tool_config)
 )
 
 scrape_pipeline = SequentialAgent(
