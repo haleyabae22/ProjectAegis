@@ -7,7 +7,7 @@ import { WeeklyFundPoint } from "../services/impactApi";
 const BLUE = "#185FA5";
 const BLUE_PROJ = "#85B7EB";
 const GOLD = "#D4AF37";
-const LABEL_CLR = "#888780";
+const LABEL_CLR = "rgba(255,255,255,0.7)";
 const GRID_CLR = "rgba(0,0,0,0.06)";
 
 const PAD_TOP = 6;
@@ -43,8 +43,8 @@ type Props = { data: WeeklyFundPoint[]; cardWidth?: number; cardHeight?: number 
 
 export function CumulativeAreaChart({ data, cardWidth, cardHeight }: Props) {
   const { width: screenWidth } = useWindowDimensions();
-  const W = cardWidth ?? screenWidth;       // full card width if not provided
-  const H = cardHeight ?? 160;              // default card height
+  const W = cardWidth ?? screenWidth;
+  const H = cardHeight ?? 160;
   const CHART_W = W - PAD_LEFT - PAD_RIGHT;
   const CHART_H = H - PAD_TOP - PAD_BOTTOM;
 
@@ -117,7 +117,7 @@ export function CumulativeAreaChart({ data, cardWidth, cardHeight }: Props) {
           {yTicks.map(({ value, y }) => (
             <React.Fragment key={value}>
               <Line x1={PAD_LEFT} y1={y} x2={W - PAD_RIGHT} y2={y} stroke={GRID_CLR} strokeWidth="1" />
-              <SvgText x={PAD_LEFT - 4} y={y + 4} textAnchor="end" fontSize="8" fill={LABEL_CLR}>
+              <SvgText x={PAD_LEFT - 4} y={y + 4} textAnchor="end" fontSize="10" fill={LABEL_CLR}>
                 {fmt(value)}
               </SvgText>
             </React.Fragment>
@@ -125,7 +125,7 @@ export function CumulativeAreaChart({ data, cardWidth, cardHeight }: Props) {
 
           {/* X labels */}
           {xLabels.map(({ label, x }) => (
-            <SvgText key={label} x={x} y={H - 6} textAnchor="middle" fontSize="9" fill={LABEL_CLR}>
+            <SvgText key={label} x={x} y={H - 6} textAnchor="middle" fontSize="11" fill={LABEL_CLR}>
               {label}
             </SvgText>
           ))}
@@ -171,7 +171,7 @@ export function CumulativeAreaChart({ data, cardWidth, cardHeight }: Props) {
 const styles = StyleSheet.create({
   root: { width: "100%" },
   legend: { flexDirection: "row", gap: 12, marginBottom: 6 },
-  legendLabel: { fontSize: 10, color: LABEL_CLR },
+  legendLabel: { fontSize: 13, color: LABEL_CLR },
   legendDot: { width: 8, height: 8, borderRadius: 2 },
   legendItem: { flexDirection: "row", alignItems: "center", gap: 6 },
 });

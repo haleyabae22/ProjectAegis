@@ -2,9 +2,8 @@ import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { createBottomTabNavigator, BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
-
+import { createNativeStackNavigator, NativeStackNavigationOptions } from "@react-navigation/native-stack";
 import { LandingScreen } from "../screens/LandingScreen";
 import { ImpactDashboardScreen } from "../screens/ImpactDashboardScreen";
 import { ProfileScreen } from "../screens/ProfileScreen";
@@ -26,29 +25,19 @@ export type HomeStackParamList = {
 const Tab = createBottomTabNavigator<AppTabParamList>();
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
-const sharedHeaderOptions = {
+const sharedHeaderOptions: NativeStackNavigationOptions = {
   headerStyle: {
-    backgroundColor: "#001f3f",
-    height: 120
+    backgroundColor: "#001f3f", // ✅ only allowed property
   },
-  headerTitleAlign: "left" as const,
+  headerTitleAlign: "left",
   headerTintColor: "#D4AF37",
   headerTitleStyle: {
-    ...typography.headlineSm,
+    fontWeight: "700",
+    fontSize: 50,
     color: "#D4AF37",
-    fontWeight: "700" as const,
-    fontSize: 50
   },
-  headerTitleContainerStyle: {
-    paddingTop: 18,
-    paddingLeft: 16
-  },
-  headerLeftContainerStyle: {
-    paddingTop: 18,
-    paddingLeft: 8
-  },
-  headerShadowVisible: false
-} as const;
+  headerShadowVisible: false,
+};
 
 function HomeStackNavigator() {
   return (
@@ -123,57 +112,56 @@ export function AppNavigator() {
     <Tab.Navigator
       tabBar={(props: BottomTabBarProps) => <AppTabBar {...props} />}
       screenOptions={{
-        headerShown: false,
+        headerShown: false, // tabs hide header by default
         tabBarActiveTintColor: "#D4AF37",
-        tabBarInactiveTintColor: "#9A7B1C"
+        tabBarInactiveTintColor: "#9A7B1C",
       }}
     >
       <Tab.Screen
         name="Home"
-        component={HomeStackNavigator}
+        component={HomeStackNavigator} // Stack handles headers internally
         options={{
           tabBarLabel: "Home",
-          tabBarIcon: ({ focused, color, size }: { focused: boolean; color: string; size: number }) => (
+          tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? "home" : "home-outline"}
               size={size}
               color={color}
             />
-          )
+          ),
         }}
       />
+
       <Tab.Screen
         name="Impact Dashboard"
         component={ImpactDashboardScreen}
         options={{
-          headerShown: true,
-          title: "Impact Dashboard",
-          ...sharedHeaderOptions,
           tabBarLabel: "Impact Dashboard",
-          tabBarIcon: ({ focused, color, size }: { focused: boolean; color: string; size: number }) => (
+          tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? "shield-checkmark" : "shield-checkmark-outline"}
               size={size}
               color={color}
             />
-          )
+          ),
+          headerShown: true, // If you want the default header, you can leave it
+          // Do NOT spread sharedHeaderOptions here
         }}
       />
+
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
-          headerShown: true,
-          title: "User Profile",
-          ...sharedHeaderOptions,
           tabBarLabel: "Profile",
-          tabBarIcon: ({ focused, color, size }: { focused: boolean; color: string; size: number }) => (
+          tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? "person" : "person-outline"}
               size={size}
               color={color}
             />
-          )
+          ),
+          headerShown: true,
         }}
       />
     </Tab.Navigator>
