@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Animated,
   Easing,
@@ -17,6 +17,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { HomeStackParamList } from "../navigation/AppNavigator";
 import { colors, radius, spacing } from "../theme/colors";
 import { typography } from "../theme/typography";
+import { useProfile } from "../contexts/ProfileContext";
 
 // ─── Asset imports ────────────────────────────────────────────────────────────
 // Adjust paths to match your project structure
@@ -305,6 +306,7 @@ const heroStyles = StyleSheet.create({
 // ─── LandingScreen ────────────────────────────────────────────────────────────
 export function LandingScreen({ navigation }: Props) {
   const { width } = useWindowDimensions();
+  const { setProfile } = useProfile();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [fullName, setFullName] = useState("");
   const [citizenship, setCitizenship] = useState<"Yes" | "No" | "">("");
@@ -326,6 +328,16 @@ export function LandingScreen({ navigation }: Props) {
 
   const handleSubmit = () => {
     if (!canSubmit) return;
+    
+    setProfile({
+      fullName,
+      citizenship: citizenship as "Yes" | "No",
+      monthlyIncome,
+      monthlyHousingCost,
+      monthlyUtilityCost,
+      dependentCareCost
+    });
+
     setIsFormOpen(false);
     navigation.navigate("ServiceAnalysisReport");
   };

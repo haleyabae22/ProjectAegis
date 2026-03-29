@@ -1,19 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { useProfile } from "../contexts/ProfileContext";
 
 export function ProfileScreen() {
+  const { profile, setProfile } = useProfile();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditHovered, setIsEditHovered] = useState(false);
   const [isYesHovered, setIsYesHovered] = useState(false);
   const [isNoHovered, setIsNoHovered] = useState(false);
   const [isCancelHovered, setIsCancelHovered] = useState(false);
   const [isSaveHovered, setIsSaveHovered] = useState(false);
-  const [fullName, setFullName] = useState("Jordan Rivera");
-  const [citizenship, setCitizenship] = useState<"Yes" | "No" | "">("");
-  const [monthlyIncome, setMonthlyIncome] = useState("$2,500");
-  const [monthlyHousingCost, setMonthlyHousingCost] = useState("$1,200");
-  const [monthlyUtilityCost, setMonthlyUtilityCost] = useState("$150");
-  const [dependentCareCost, setDependentCareCost] = useState("$300");
+
+  const [fullName, setFullName] = useState(profile.fullName || "John Doe");
+  const [citizenship, setCitizenship] = useState<"Yes" | "No" | "">(profile.citizenship);
+  const [monthlyIncome, setMonthlyIncome] = useState(profile.monthlyIncome || "0");
+  const [monthlyHousingCost, setMonthlyHousingCost] = useState(profile.monthlyHousingCost || "0");
+  const [monthlyUtilityCost, setMonthlyUtilityCost] = useState(profile.monthlyUtilityCost || "0");
+  const [dependentCareCost, setDependentCareCost] = useState(profile.dependentCareCost || "0");
+
+  useEffect(() => {
+    if (isModalOpen) {
+      setFullName(profile.fullName || "John Doe");
+      setCitizenship(profile.citizenship);
+      setMonthlyIncome(profile.monthlyIncome || "0");
+      setMonthlyHousingCost(profile.monthlyHousingCost || "0");
+      setMonthlyUtilityCost(profile.monthlyUtilityCost || "0");
+      setDependentCareCost(profile.dependentCareCost || "0");
+    }
+  }, [isModalOpen, profile]);
+
+  const handleSave = () => {
+    setProfile({
+      fullName,
+      citizenship: citizenship as "Yes" | "No" | "",
+      monthlyIncome,
+      monthlyHousingCost,
+      monthlyUtilityCost,
+      dependentCareCost
+    });
+    setIsModalOpen(false);
+  };
 
   return (
     <View style={styles.page}>
@@ -21,32 +47,32 @@ export function ProfileScreen() {
         <View style={styles.card}>
           <View style={styles.fieldContainer}>
             <Text style={styles.fieldLabel}>Full Name</Text>
-            <Text style={styles.field}>{fullName}</Text>
+            <Text style={styles.field}>{profile.fullName || "John Doe"}</Text>
           </View>
 
           <View style={styles.fieldContainer}>
             <Text style={styles.fieldLabel}>Citizenship</Text>
-            <Text style={styles.field}>{citizenship || "Not specified"}</Text>
+            <Text style={styles.field}>{profile.citizenship || "Not specified"}</Text>
           </View>
 
           <View style={styles.fieldContainer}>
             <Text style={styles.fieldLabel}>Monthly Income</Text>
-            <Text style={styles.field}>{monthlyIncome}</Text>
+            <Text style={styles.field}>${profile.monthlyIncome || "0"}</Text>
           </View>
 
           <View style={styles.fieldContainer}>
             <Text style={styles.fieldLabel}>Monthly Housing Cost</Text>
-            <Text style={styles.field}>{monthlyHousingCost}</Text>
+            <Text style={styles.field}>${profile.monthlyHousingCost || "0"}</Text>
           </View>
 
           <View style={styles.fieldContainer}>
             <Text style={styles.fieldLabel}>Monthly Utility Cost</Text>
-            <Text style={styles.field}>{monthlyUtilityCost}</Text>
+            <Text style={styles.field}>${profile.monthlyUtilityCost || "0"}</Text>
           </View>
 
           <View style={styles.fieldContainer}>
             <Text style={styles.fieldLabel}>Dependent Care Cost</Text>
-            <Text style={styles.field}>{dependentCareCost}</Text>
+            <Text style={styles.field}>${profile.dependentCareCost || "0"}</Text>
           </View>
 
           <Pressable
@@ -161,7 +187,7 @@ export function ProfileScreen() {
                   ]}
                   onHoverIn={() => setIsSaveHovered(true)}
                   onHoverOut={() => setIsSaveHovered(false)}
-                  onPress={() => setIsModalOpen(false)}
+                  onPress={handleSave}
                 >
                   <Text style={styles.buttonPrimaryText}>Save</Text>
                 </Pressable>

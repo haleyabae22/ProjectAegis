@@ -5,14 +5,17 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import { AppNavigator } from "./src/navigation/AppNavigator";
 import { colors } from "./src/theme/colors";
+import { ProfileProvider } from "./src/contexts/ProfileContext";
 
 export default function App() {
   return (
     <SafeAreaProvider>
-      <NavigationContainer>
-        <StatusBar style="light" backgroundColor={colors.primary} />
-        <AppNavigator />
-      </NavigationContainer>
+      <ProfileProvider>
+        <NavigationContainer>
+          <StatusBar style="light" backgroundColor={colors.primary} />
+          <AppNavigator />
+        </NavigationContainer>
+      </ProfileProvider>
     </SafeAreaProvider>
   );
 }

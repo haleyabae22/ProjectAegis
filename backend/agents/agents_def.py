@@ -54,12 +54,11 @@ url_search_agent = Agent(
     description="Agent tasked with finding candidate government funding programs on the web.",
     instruction="""
         You are a URL Search Agent. Your primary workflow is:
-        1. use database_specialist to get a list of links already scrape to not rescrape them
-        2. Use the `google_search` tool to search for new government funding programs.
-        3. Identify candidate resources or websites.
-        4. Return a clean, pure list of URLs you discovered. Output nothing else but these URLs.
+        1. Use the `google_search` tool to search for new government funding programs.
+        2. Identify candidate resources or websites.
+        3. Return a clean, pure list of URLs you discovered. Output nothing else but these URLs.
     """,
-    tools=[AgentTool(db_agent), google_search],
+    tools=[google_search],
     generate_content_config=types.GenerateContentConfig(tool_config=my_tool_config)
 )
 
@@ -166,7 +165,7 @@ analysis_agent = Agent(
     name="analysis_agent",
     model="gemini-3.1-flash-lite-preview",
     description="Use information from the database to answer questions",
-    tools=[google_search, AgentTool(db_agent)],
+    tools=[AgentTool(db_agent)],
     generate_content_config=types.GenerateContentConfig(tool_config=my_tool_config)
 )
 # ==========================================
@@ -189,15 +188,8 @@ orchestrator_agent = Agent(
         2. If the user asks a direct question about what is currently IN THE DATABASE (e.g., "how many urls do we have?"):
            - Call `call_database_specialist` directly to get the answer.
 
-        SAMPLE USER PROFILE:
-        name: John Doe
-        citizenship: US Citizen
-        zip: 78701
-        monthly_income: 1200.00
-        assets: 1500.00
-        housing_cost: 600.00
-        utility_cost: 100.00
-        dependent_care: 0.00
+        NOTE: The User Profile will be provided within the user's query.
+
     """,
     # FIX 1: Remove db_agent from this list. It is already owned by scrape_pipeline.
     sub_agents=[scrape_pipeline, analysis_agent],
@@ -206,7 +198,6 @@ orchestrator_agent = Agent(
     # I also added AgentTool(scraper_agent) and AgentTool(validator_agent) because your instructions
     # explicitly tell the orchestrator to call them!
     tools=[
-        google_search,
         AgentTool(analysis_agent),
         AgentTool(db_agent),
         AgentTool(scraper_agent),
@@ -248,6 +239,7 @@ async def run_orchestrator(query: str):
     print("✅ Final Orchestrator Response:\n")
     print(final_response)
     print("=" * 50 + "\n")
-
+    
+    return final_response
 
 root_agent = orchestrator_agent
