@@ -75,10 +75,10 @@ export function LandingScreen({ navigation }: Props) {
         <View style={styles.contentSection}>
           <View style={[styles.contentRow, !isWideLayout && styles.contentRowStack]}>
             <View style={styles.paragraphBlock}>
-              <Text style={styles.paragraphTitle}>Benefits Overview</Text>
+              <Text style={styles.paragraphTitle}>Stop Looking Everywhere...</Text>
               <Text style={styles.paragraphText}>
-                Placeholder copy: this section explains how Aegis scans your profile, identifies benefit opportunities,
-                and provides a clear summary to help you take action with confidence.
+                Billions in aid go unclaimed every year. Aegis helps close that gap.
+                Our multi‑agent system scans the benefits landscape, identifies programs aligned with your needs, and shows your total potential impact in minutes.
               </Text>
             </View>
             <View style={styles.imagePlaceholder}>
@@ -88,10 +88,10 @@ export function LandingScreen({ navigation }: Props) {
 
           <View style={[styles.contentRow, styles.contentRowReverse, !isWideLayout && styles.contentRowStack]}>
             <View style={styles.paragraphBlock}>
-              <Text style={styles.paragraphTitle}>Personalized Recommendations</Text>
+              <Text style={styles.paragraphTitle}>Your benefits, decoded.</Text>
               <Text style={styles.paragraphText}>
-                Placeholder copy: this area highlights tailored programs, estimated monthly impact, and what documents
-                are needed next so users can quickly move from discovery to enrollment.
+                Aegis transforms complex government criteria into clear, personalized recommendations — showing you how much support you could unlock and what to do next.
+
               </Text>
             </View>
             <View style={styles.imagePlaceholder}>
@@ -101,10 +101,9 @@ export function LandingScreen({ navigation }: Props) {
 
           <View style={[styles.contentRow, !isWideLayout && styles.contentRowStack]}>
             <View style={styles.paragraphBlock}>
-              <Text style={styles.paragraphTitle}>Guided Support</Text>
+              <Text style={styles.paragraphTitle}>Turning eligibility into real outcomes.</Text>
               <Text style={styles.paragraphText}>
-                Placeholder copy: this section can showcase support channels, live expert availability, and step-by-step
-                follow-up so users know exactly what to do after they receive results.
+                Aegis doesn’t stop at recommendations — our system walks you through the process, ensuring you can actually access the support you qualify for.
               </Text>
             </View>
             <View style={styles.imagePlaceholder}>
