@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from db_api.helper_funcs import add_program, retrieve_used_urls, get_database_data
+from db_api.helper_funcs import add_program, retrieve_used_urls, get_database_data, retrieve_program
 
 # Google ADK Imports
 from google.adk.agents import Agent
@@ -18,20 +18,30 @@ db_agent = Agent(
     instruction="""
         You are a Database Specialist Agent.
         Your job is to assist the user by reading from and writing to the programs database.
-        Always confirm with the user when a new record has been successfully added.
+        Always confirm with the user when a new record has been successfully added or retrieved.
         
-        when adding to the data base you will get in json format
+        When adding to the data base you will get in json format:
+        {
+            "url": "www.anotherexample.com",
+            "desc": "Funding for Graduate Students",
+            "amount": 800,
+            "rate": "one-time"
+        }
+        NOTE: When calling the `add_program` tool, map the "amount" from the JSON to the `money` parameter.
+        
+        When querying the database you will get in json format:
         {
             "url": "www.example.com",
             "desc": "Funding for low income families",
-            "amount": 300,
+            "money": 300.0,
             "rate": "monthly"
         }
         
-        NOTE: When calling the `add_program` tool, map the "amount" from the JSON to the `money` parameter.
+        When retrieving all urls from the database, you will get a list of urls.
+        
         Do NOT provide a value for the `db_path` parameter in any of the tools; let it use the default.
     """,
-    tools=[add_program, retrieve_used_urls, get_database_data]
+    tools=[add_program, retrieve_used_urls, retrieve_program, get_database_data]
 )
 
 
