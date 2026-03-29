@@ -9,7 +9,7 @@ web-build/
 # local env files
 .env
 .env.*
-
+.idea
 # logs
 npm-debug.log*
 yarn-debug.log*
