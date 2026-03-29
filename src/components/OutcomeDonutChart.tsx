@@ -11,7 +11,7 @@ import Svg, { Circle, G, Path } from "react-native-svg";
 import { OutcomeSlice } from "../services/impactApi";
 
 // ─── Palette ──────────────────────────────────────────────────────────────────
-const LABEL_CLR = "#888780";
+const LABEL_CLR = "rgba(255,255,255,0.7)";
 const TEXT_CLR  = "#2C2C2A";
 
 // ─── Donut math ───────────────────────────────────────────────────────────────
@@ -20,7 +20,7 @@ const SIZE       = 160;
 const CX         = SIZE / 2;
 const CY         = SIZE / 2;
 const R_OUTER    = 68;
-const R_INNER    = 46;  // cutout radius
+const R_INNER    = 46;
 
 function polarToCartesian(cx: number, cy: number, r: number, angleDeg: number) {
   const rad = ((angleDeg - 90) * Math.PI) / 180;
@@ -50,7 +50,6 @@ function arcPath(
 
 type Props = {
   data: OutcomeSlice[];
-  /** Label shown in the donut centre (e.g. the primary metric) */
   centreLabel?: string;
   centreSubLabel?: string;
 };
@@ -71,13 +70,12 @@ export function OutcomeDonutChart({
       const pct   = d.count / total;
       const sweep = pct * 360;
       const start = cursor;
-      const end   = cursor + sweep - 1.5; // 1.5° gap between slices
+      const end   = cursor + sweep - 1.5;
       cursor += sweep;
       return { ...d, start, end, pct };
     });
   }, [data, total]);
 
-  // Default centre label = largest slice
   const primary = slices.reduce((a, b) => (a.count > b.count ? a : b));
   const displayLabel    = centreLabel    ?? `${primary.count}%`;
   const displaySubLabel = centreSubLabel ?? primary.label;
@@ -94,17 +92,16 @@ export function OutcomeDonutChart({
               fill={s.color}
             />
           ))}
-          {/* Centre background circle */}
           <Circle cx={CX} cy={CY} r={R_INNER - 2} fill="#fff" />
         </Svg>
 
-        {/* Centre text overlay (positioned absolutely over SVG) */}
+        {/* Centre text overlay */}
         <View style={styles.centre} pointerEvents="none">
           <Text style={styles.centreValue}>{displayLabel}</Text>
           <Text style={styles.centreSub}>{displaySubLabel}</Text>
         </View>
 
-        {/* Legend + copy */}
+        {/* Legend */}
         <View style={styles.meta}>
           {slices.map((s) => (
             <View key={s.label} style={styles.legendRow}>
@@ -144,13 +141,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   centreValue: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: "500",
     color: TEXT_CLR,
   },
   centreSub: {
-    fontSize: 11,
-    color: LABEL_CLR,
+    fontSize: 14,
+    color: "#888780",
     marginTop: 2,
   },
   meta: {
@@ -169,17 +166,17 @@ const styles = StyleSheet.create({
   },
   legendLabel: {
     flex: 1,
-    fontSize: 13,
+    fontSize: 15,
     color: LABEL_CLR,
   },
   legendPct: {
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: "500",
   },
   note: {
-    fontSize: 11,
+    fontSize: 14,
     color: LABEL_CLR,
-    lineHeight: 16,
+    lineHeight: 20,
     marginTop: 4,
   },
 });

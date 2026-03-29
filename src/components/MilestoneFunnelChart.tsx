@@ -17,8 +17,8 @@ const GOLD_BG    = "#FAEEDA";
 const GREEN      = "#0F6E56";
 const GREEN_BG   = "#E1F5EE";
 const TRACK_BG   = "rgba(0,0,0,0.06)";
-const LABEL_CLR  = "#5F5E5A";
-const MUTED_CLR  = "#888780";
+const WHITE      = "#FFFFFF";
+const WHITE_MID  = "rgba(255,255,255,0.75)";
 
 // ─── Tone map ─────────────────────────────────────────────────────────────────
 
@@ -146,8 +146,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   headerLabel: {
-    fontSize: 11,
-    color: MUTED_CLR,
+    fontSize: 13,
+    color: WHITE,
     textTransform: "uppercase",
     letterSpacing: 0.5,
   },
@@ -194,8 +194,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   milestoneLabel: {
-    fontSize: 13,
-    color: LABEL_CLR,
+    fontSize: 15,
+    color: WHITE,
     fontWeight: "500",
   },
   badge: {
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   badgeText: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: "500",
   },
   track: {
@@ -221,12 +221,12 @@ const styles = StyleSheet.create({
     marginTop: 12,
     paddingTop: 12,
     borderTopWidth: 0.5,
-    borderTopColor: "rgba(0,0,0,0.08)",
+    borderTopColor: "rgba(255,255,255,0.15)",
     paddingLeft: 32,
   },
   footerText: {
-    fontSize: 12,
-    color: MUTED_CLR,
-    lineHeight: 18,
+    fontSize: 14,
+    color: WHITE_MID,
+    lineHeight: 20,
   },
 });

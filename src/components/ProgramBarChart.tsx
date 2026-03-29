@@ -14,8 +14,8 @@ const GOLD       = "#D4AF37";
 const GOLD_PEND  = "#FAC775";
 const BLUE       = "#185FA5";
 const BLUE_AVAIL = "#85B7EB";
-const LABEL_CLR  = "#888780";
-const MUTED_CLR  = "#5F5E5A";
+const LABEL_CLR  = "rgba(255,255,255,0.7)";
+const MUTED_CLR  = "rgba(255,255,255,0.85)";
 const BG_TRACK   = "rgba(0,0,0,0.06)";
 
 const STATUS_COLOR: Record<ProgramBar["status"], string> = {
@@ -66,12 +66,9 @@ export function ProgramBarChart({ data }: Props) {
 
           return (
             <View key={item.program} style={styles.row}>
-              {/* Label */}
               <Text style={styles.programLabel} numberOfLines={1}>
                 {item.program}
               </Text>
-
-              {/* Track + bar */}
               <View style={styles.trackWrap}>
                 <View style={styles.track}>
                   <View
@@ -116,7 +113,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
   },
   legendLabel: {
-    fontSize: 12,
+    fontSize: 14,
     color: LABEL_CLR,
   },
   bars: {
@@ -126,7 +123,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   programLabel: {
-    fontSize: 12,
+    fontSize: 14,
     color: MUTED_CLR,
     marginBottom: 2,
   },
@@ -147,7 +144,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   valueLabel: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: "500",
     minWidth: 40,
     textAlign: "right",
