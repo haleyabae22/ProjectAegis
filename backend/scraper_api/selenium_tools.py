@@ -11,7 +11,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
-# from google.adk.tool import Tool
 
 
 # Initialize WebDriver
@@ -43,7 +42,11 @@ def driver():
 class GoToUrl(BaseTool):
     """Tool to navigate to a URL."""
 
-    description = "Navigate to a specified URL"
+    def __init__(self):
+        super().__init__(
+            name="GoToUrl",
+            description="Navigate to a specified URL"
+        )
 
     def __call__(self, url: str) -> str:
         """Navigate to the specified URL."""
@@ -57,7 +60,11 @@ class GoToUrl(BaseTool):
 class TakeScreenshot(BaseTool):
     """Tool to take a screenshot of the current page."""
 
-    description = "Take a screenshot of the current page"
+    def __init__(self):
+        super().__init__(
+            name="TakeScreenshot",
+            description="Take a screenshot of the current page"
+        )
 
     def __call__(self, tool_context: Dict[str, Any], file_name: str = "screenshot.png") -> str:
         """Take a screenshot and save it to the specified file."""
@@ -76,7 +83,11 @@ class TakeScreenshot(BaseTool):
 class FindElementWithText(BaseTool):
     """Tool to find an element containing specific text."""
 
-    description = "Find an element on the page containing specific text"
+    def __init__(self):
+        super().__init__(
+            name="FindElementWithText",
+            description="Find an element on the page containing specific text"
+        )
 
     def __call__(self, text_pattern: str) -> str:
         """Find an element containing the specified text pattern."""
@@ -93,7 +104,11 @@ class FindElementWithText(BaseTool):
 class ClickElementWithText(BaseTool):
     """Tool to click an element containing specific text."""
 
-    description = "Click an element containing specific text"
+    def __init__(self):
+        super().__init__(
+            name="ClickElementWithText",
+            description="Click an element containing specific text"
+        )
 
     def __call__(self, text_pattern: str) -> str:
         """Click an element containing the specified text pattern."""
@@ -111,7 +126,11 @@ class ClickElementWithText(BaseTool):
 class EnterTextIntoElement(BaseTool):
     """Tool to enter text into an element."""
 
-    description = "Enter text into an element identified by its ID"
+    def __init__(self):
+        super().__init__(
+            name="EnterTextIntoElement",
+            description="Enter text into an element identified by its ID"
+        )
 
     def __call__(self, text_to_enter: str, element_id: str, press_enter: bool = True) -> str:
         """Enter text into the specified element."""
@@ -134,7 +153,11 @@ class EnterTextIntoElement(BaseTool):
 class ScrollDown(BaseTool):
     """Tool to scroll down the page."""
 
-    description = "Scroll down the page"
+    def __init__(self):
+        super().__init__(
+            name="ScrollDown",
+            description="Scroll down the page"
+        )
 
     def __call__(self, amount: int = 500) -> str:
         """Scroll down by the specified amount of pixels."""
@@ -148,7 +171,11 @@ class ScrollDown(BaseTool):
 class GetPageSource(BaseTool):
     """Tool to get the page source."""
 
-    description = "Get the HTML source of the current page"
+    def __init__(self):
+        super().__init__(
+            name="GetPageSource",
+            description="Get the HTML source of the current page"
+        )
 
     def __call__(self, limit: int = 10000) -> str:
         """Get the HTML source of the current page, limited to a specified number of characters."""
@@ -166,7 +193,11 @@ class GetPageSource(BaseTool):
 class AnalyzeWebpageAndDetermineAction(BaseTool):
     """Tool to analyze a webpage and determine actions to take."""
 
-    description = "Analyze a webpage and determine actions to achieve a specific task"
+    def __init__(self):
+        super().__init__(
+            name="AnalyzeWebpageAndDetermineAction",
+            description="Analyze a webpage and determine actions to achieve a specific task"
+        )
 
     def __call__(self, user_task: str) -> str:
         """
