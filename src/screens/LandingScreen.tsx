@@ -22,20 +22,11 @@ export function LandingScreen({ navigation }: Props) {
   const { width } = useWindowDimensions();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [fullName, setFullName] = useState("");
-  const [citizenship, setCitizenship] = useState<"Yes" | "No" | "">("");
-  const [monthlyIncome, setMonthlyIncome] = useState("");
-  const [monthlyHousingCost, setMonthlyHousingCost] = useState("");
-  const [monthlyUtilityCost, setMonthlyUtilityCost] = useState("");
-  const [dependentCareCost, setDependentCareCost] = useState("");
+  const [email, setEmail] = useState("");
+  const [zipCode, setZipCode] = useState("");
   const isWideLayout = width >= 860;
 
-  const canSubmit =
-    fullName.trim().length > 0 &&
-    citizenship !== "" &&
-    monthlyIncome.trim().length > 0 &&
-    monthlyHousingCost.trim().length > 0 &&
-    monthlyUtilityCost.trim().length > 0 &&
-    dependentCareCost.trim().length > 0;
+  const canSubmit = fullName.trim().length > 0 && email.trim().length > 0;
 
   const handleSubmit = () => {
     if (!canSubmit) {
@@ -127,63 +118,23 @@ export function LandingScreen({ navigation }: Props) {
             <TextInput
               value={fullName}
               onChangeText={setFullName}
-              placeholder="Full Name"
+              placeholder="Full name"
               placeholderTextColor={colors.onSurfaceVariant}
               style={styles.input}
             />
-
-            <Text style={styles.fieldLabel}>Citizenship</Text>
-            <View style={styles.choiceRow}>
-              <Pressable
-                style={[styles.choiceButton, citizenship === "Yes" && styles.choiceButtonActive]}
-                onPress={() => setCitizenship("Yes")}
-              >
-                <Text
-                  style={[styles.choiceButtonText, citizenship === "Yes" && styles.choiceButtonTextActive]}
-                >
-                  Yes
-                </Text>
-              </Pressable>
-              <Pressable
-                style={[styles.choiceButton, citizenship === "No" && styles.choiceButtonActive]}
-                onPress={() => setCitizenship("No")}
-              >
-                <Text
-                  style={[styles.choiceButtonText, citizenship === "No" && styles.choiceButtonTextActive]}
-                >
-                  No
-                </Text>
-              </Pressable>
-            </View>
-
             <TextInput
-              value={monthlyIncome}
-              onChangeText={setMonthlyIncome}
-              placeholder="Monthly Income"
+              value={email}
+              onChangeText={setEmail}
+              placeholder="Email"
               placeholderTextColor={colors.onSurfaceVariant}
-              keyboardType="number-pad"
+              autoCapitalize="none"
+              keyboardType="email-address"
               style={styles.input}
             />
             <TextInput
-              value={monthlyHousingCost}
-              onChangeText={setMonthlyHousingCost}
-              placeholder="Monthly Housing Cost"
-              placeholderTextColor={colors.onSurfaceVariant}
-              keyboardType="number-pad"
-              style={styles.input}
-            />
-            <TextInput
-              value={monthlyUtilityCost}
-              onChangeText={setMonthlyUtilityCost}
-              placeholder="Monthly Utility Cost"
-              placeholderTextColor={colors.onSurfaceVariant}
-              keyboardType="number-pad"
-              style={styles.input}
-            />
-            <TextInput
-              value={dependentCareCost}
-              onChangeText={setDependentCareCost}
-              placeholder="Dependent Care Cost"
+              value={zipCode}
+              onChangeText={setZipCode}
+              placeholder="ZIP code"
               placeholderTextColor={colors.onSurfaceVariant}
               keyboardType="number-pad"
               style={styles.input}
@@ -353,14 +304,14 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(12, 30, 38, 0.45)",
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: spacing[5]
+    paddingHorizontal: spacing[4]
   },
   modalCard: {
-    width: "92%",
-    maxWidth: 460,
+    width: "100%",
+    maxWidth: 360,
     backgroundColor: colors.surfaceContainerLowest,
     borderRadius: radius.lg,
-    padding: spacing[5],
+    padding: spacing[4],
     gap: spacing[3]
   },
   modalTitle: {
@@ -375,35 +326,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing[3],
     color: colors.onSurface,
     backgroundColor: colors.surface
-  },
-  fieldLabel: {
-    ...typography.labelLg,
-    color: colors.onSurface
-  },
-  choiceRow: {
-    flexDirection: "row",
-    gap: spacing[2]
-  },
-  choiceButton: {
-    flex: 1,
-    minHeight: 40,
-    borderRadius: radius.md,
-    borderWidth: 1,
-    borderColor: colors.outlineVariant,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: colors.surface
-  },
-  choiceButtonActive: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary
-  },
-  choiceButtonText: {
-    ...typography.labelLg,
-    color: colors.onSurfaceVariant
-  },
-  choiceButtonTextActive: {
-    color: colors.onPrimary
   },
   modalActions: {
     flexDirection: "row",
