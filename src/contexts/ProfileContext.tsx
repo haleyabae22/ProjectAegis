@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export type UserProfile = {
   fullName: string;
@@ -24,9 +25,48 @@ const defaultProfile: UserProfile = {
 };
 
 const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
+const PROFILE_STORAGE_KEY = "PROJECT_AEGIS_PROFILE_V1";
 
 export function ProfileProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<UserProfile>(defaultProfile);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    const hydrateProfile = async () => {
+      try {
+        const raw = await AsyncStorage.getItem(PROFILE_STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw) as Partial<UserProfile>;
+          setProfile({
+            fullName: parsed.fullName ?? defaultProfile.fullName,
+            citizenship: parsed.citizenship ?? defaultProfile.citizenship,
+            monthlyIncome: parsed.monthlyIncome ?? defaultProfile.monthlyIncome,
+            monthlyHousingCost: parsed.monthlyHousingCost ?? defaultProfile.monthlyHousingCost,
+            monthlyUtilityCost: parsed.monthlyUtilityCost ?? defaultProfile.monthlyUtilityCost,
+            dependentCareCost: parsed.dependentCareCost ?? defaultProfile.dependentCareCost,
+          });
+        }
+      } finally {
+        setIsHydrated(true);
+      }
+    };
+
+    hydrateProfile();
+  }, []);
+
+  useEffect(() => {
+    if (!isHydrated) {
+      return;
+    }
+
+    AsyncStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(profile)).catch(() => {
+      // Ignore persistence errors to avoid interrupting profile updates.
+    });
+  }, [profile, isHydrated]);
+
+  if (!isHydrated) {
+    return null;
+  }
 
   return (
     <ProfileContext.Provider value={{ profile, setProfile }}>
