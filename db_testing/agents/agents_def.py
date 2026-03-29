@@ -63,7 +63,6 @@ validator_agent = Agent(
 )
 
 # --- Scraper Agent ---
-# --- Scraper Agent ---
 scraper_agent = Agent(
     name="scraper_agent",
     model="gemini-3.1-flash-lite-preview",
@@ -75,7 +74,7 @@ scraper_agent = Agent(
         1. Using the database_specialist get the list of urls already scrapped and find new one, no redundant scraps
         2. Find new urls that have not been scrapped already
         3. While on the page describe the funding and who are eligible for it, and estimate how much money being disbursed  
-        from the page
+        from the page for a per user level
         4. Organize data into a list of jsons to give to validator_agent to check the results and state if format is valid
 
         example format
