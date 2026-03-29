@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from google.genai import types
-from db_api.helper_funcs import add_program, retrieve_used_urls, get_database_data, retrieve_program
-from scraper_api.scrape_funcs import scrape_url
+from db_api.helper_funcs import AddProgram, RetrieveProgram, GetDatabaseData, RetrieveUsedUrls
+from scraper_api.scrape_funcs import ScrapeUrl
 
 # Google ADK Imports
 from google.adk.agents import Agent, SequentialAgent
@@ -43,7 +43,7 @@ db_agent = Agent(
         NOTE: When calling the `add_program` tool, map the "amount" from the JSON to the `money` parameter.
         Do NOT provide a value for the `db_path` parameter in any of the tools; let it use the default.
     """,
-    tools=[add_program, retrieve_used_urls, retrieve_program, get_database_data]
+    tools=[AddProgram(), RetrieveUsedUrls(), RetrieveProgram(), GetDatabaseData()]
 )
 
 # --- URL Search Agent ---
@@ -83,7 +83,7 @@ scraper_agent = Agent(
         6. Output the extracted data STRICTLY in JSON format. Do not add markdown formatting outside the JSON.
         Only do 5 instances at a time.
     """,
-    tools=[AgentTool(url_search_agent), AgentTool(db_agent), scrape_url],
+    tools=[AgentTool(url_search_agent), AgentTool(db_agent), ScrapeUrl()],
     generate_content_config=types.GenerateContentConfig(tool_config=my_tool_config)
 )
 
