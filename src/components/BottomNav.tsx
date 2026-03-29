@@ -2,8 +2,6 @@ import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 
-import { colors } from "../theme/colors";
-
 const tabMeta: Record<string, { label: string; icon: string }> = {
   Home: { label: "Home", icon: "home" },
   Security: { label: "Security", icon: "shield" },
@@ -54,9 +52,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#001f3f",
     paddingHorizontal: 8,
     paddingVertical: 10,
-    gap: 8,
-    borderTopWidth: 2,
-    borderTopColor: "#D4AF37"
+    gap: 8
   },
   tab: {
     flex: 1,
@@ -67,23 +63,25 @@ const styles = StyleSheet.create({
     gap: 2
   },
   tabFocused: {
-    backgroundColor: "#D4AF37"
+    backgroundColor: "#002061",
+    borderWidth: 2,
+    borderColor: "#D4AF37"
   },
   icon: {
     fontSize: 11,
-    color: "#D4AF37",
+    color: "#9A7B1C",
     textTransform: "uppercase",
     letterSpacing: 0.4
   },
   iconFocused: {
-    color: "#001f3f"
+    color: "#D4AF37"
   },
   label: {
     fontSize: 12,
     fontWeight: "600",
-    color: "#D4AF37"
+    color: "#9A7B1C"
   },
   labelFocused: {
-    color: "#001f3f"
+    color: "#D4AF37"
   }
 });

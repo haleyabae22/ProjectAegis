@@ -37,7 +37,18 @@ function HomeStackNavigator() {
       <HomeStack.Screen
         name="ServiceAnalysisReport"
         component={ServiceAnalysisReportScreen}
-        options={{ title: "Service Analysis Report" }}
+        options={{
+          title: "Service Analysis Report",
+          headerStyle: {
+            backgroundColor: "#001f3f"
+          },
+          headerTintColor: "#D4AF37",
+          headerTitleStyle: {
+            color: "#D4AF37",
+            fontWeight: "700"
+          },
+          headerShadowVisible: false
+        }}
       />
     </HomeStack.Navigator>
   );
@@ -58,7 +69,7 @@ function AppTabBar(props: BottomTabBarProps) {
       {props.state.routes.map((route, index) => {
         const isFocused = props.state.index === index;
         const descriptor = props.descriptors[route.key];
-        const iconColor = isFocused ? colors.onPrimary : colors.onSurfaceVariant;
+        const iconColor = isFocused ? "#D4AF37" : "#9A7B1C";
 
         const onPress = () => {
           const event = props.navigation.emit({
@@ -81,7 +92,7 @@ function AppTabBar(props: BottomTabBarProps) {
                 size: 20
               })}
             </View>
-            <Text style={[styles.tabLabel, { color: isFocused ? colors.primary : colors.onSurfaceVariant }]}>
+            <Text style={[styles.tabLabel, { color: isFocused ? "#D4AF37" : "#9A7B1C" }]}>
               {String(descriptor.options.tabBarLabel ?? route.name)}
             </Text>
           </Pressable>
@@ -97,8 +108,8 @@ export function AppNavigator() {
       tabBar={(props: BottomTabBarProps) => <AppTabBar {...props} />}
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.onSurfaceVariant
+        tabBarActiveTintColor: "#D4AF37",
+        tabBarInactiveTintColor: "#9A7B1C"
       }}
     >
       <Tab.Screen
@@ -153,9 +164,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing[4],
     paddingTop: spacing[2],
     paddingBottom: spacing[3],
-    backgroundColor: "rgba(244, 250, 255, 0.96)",
-    borderTopWidth: 1,
-    borderTopColor: colors.outlineVariant
+    backgroundColor: "#001f3f"
   },
   tabItem: {
     flex: 1,
@@ -163,17 +172,21 @@ const styles = StyleSheet.create({
     gap: spacing[1]
   },
   activePill: {
-    backgroundColor: colors.primary,
+    backgroundColor: "#002061",
+    borderWidth: 2,
+    borderColor: "#D4AF37",
     borderRadius: radius.md,
     paddingHorizontal: spacing[2],
     paddingVertical: spacing[1]
   },
   inactivePill: {
+    backgroundColor: "transparent",
     borderRadius: radius.md,
     paddingHorizontal: spacing[2],
     paddingVertical: spacing[1]
   },
   tabLabel: {
-    ...typography.labelSm
+    ...typography.labelSm,
+    fontWeight: "700"
   }
 });
