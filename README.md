@@ -173,3 +173,8 @@ Recommended practice:
 - Add backend profile persistence for cross-device sync.
 - Add automated tests for navigation state restoration and profile hydration.
 - Consolidate duplicate frontend surfaces when branch strategy is finalized.
+1. cd backend
+2. python/python3 -m venv .venv
+3. source python/.venv/bin/activate
+4. pip install -r requirements.txt
+5. uvicorn main:app --host 127.0.0.1 --port 8000 --reload
