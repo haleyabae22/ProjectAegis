@@ -4,16 +4,18 @@ from db_api.helper_funcs import add_program, retrieve_used_urls, get_database_da
 from scraper_api.scrape_funcs import scrape_url
 
 # Google ADK Imports
-from google.adk.agents import Agent
+from google.adk.agents import Agent, SequentialAgent
 from google.adk.tools import google_search, ToolContext
 from google.adk.tools.agent_tool import AgentTool
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
 from google.genai.types import Content, Part
+
 load_dotenv()
 
 my_tool_config = types.ToolConfig(
-    function_calling_config=types.FunctionCallingConfig(mode="AUTO")
+    function_calling_config=types.FunctionCallingConfig(mode="AUTO"),
+    include_server_side_tool_invocations=True
 )
 
 # --- Database Specialist ---
@@ -25,7 +27,7 @@ db_agent = Agent(
         You are a Database Specialist Agent.
         Your job is to assist the user by reading from and writing to the programs database.
         Always confirm with the user when a new record has been successfully added.
-        
+
         when adding to the data base you will get in json format
         {
             "url": "www.example.com",
@@ -33,13 +35,16 @@ db_agent = Agent(
             "amount": 300,
             "rate": "monthly"
         }
-        
+
+        url: the url scraped
+        desc: the description of what the program is and who is eligible for it
+        amount: how much money at a per individual level a family / person can get
+        rate: how often are the reimbursed monthly, yearly, or one-time
         NOTE: When calling the `add_program` tool, map the "amount" from the JSON to the `money` parameter.
         Do NOT provide a value for the `db_path` parameter in any of the tools; let it use the default.
     """,
     tools=[add_program, retrieve_used_urls, retrieve_program, get_database_data]
 )
-
 
 # --- URL Search Agent ---
 url_search_agent = Agent(
@@ -48,13 +53,14 @@ url_search_agent = Agent(
     description="Agent tasked with finding candidate government funding programs on the web.",
     instruction="""
         You are a URL Search Agent. Your primary workflow is:
-        1. Use the `google_search` tool to search for new government funding programs.
-        2. Identify candidate resources or websites.
-        3. Return a clean, pure list of URLs you discovered. Output nothing else but these URLs.
+        1. use database_specialist to get a list of links already scrape to not rescrape them
+        2. Use the `google_search` tool to search for new government funding programs.
+        3. Identify candidate resources or websites.
+        4. Return a clean, pure list of URLs you discovered. Output nothing else but these URLs.
     """,
-    tools=[google_search]
+    tools=[AgentTool(db_agent), google_search],
+    generate_content_config=types.GenerateContentConfig(tool_config=my_tool_config)
 )
-
 
 # --- Scraper Agent ---
 scraper_agent = Agent(
@@ -80,7 +86,6 @@ scraper_agent = Agent(
     tools=[AgentTool(url_search_agent), AgentTool(db_agent), scrape_url]
 )
 
-
 # --- Validator Agent ---
 validator_agent = Agent(
     name="validator_agent",
@@ -93,6 +98,8 @@ validator_agent = Agent(
         VALIDATION RULES:
         1. Check that the data contains all required keys: 'desc', 'amount', 'rate', and 'url'.
         2. Check that the 'amount' makes logical sense. should be only a number
+        3. remove duplicate jsons that have the same url, and compare the urls to database_specialist result of get all urls
+        and remove any json who url is in it
 
         ACTION:
         - If the data is VALID: Use the `call_database_specialist` tool to pass the JSON data to the Database Specialist to save it. Return a success message.
@@ -101,7 +108,23 @@ validator_agent = Agent(
     tools=[AgentTool(db_agent)]
 )
 
+scrape_pipeline = SequentialAgent(
+    name="scrape_pipeline",
+    sub_agents=[url_search_agent, scraper_agent, validator_agent, db_agent],
+    description="""Workflow
+    1. Find online funding resources for individuals and families
+    2. Scrape the found urls and format in json to update database
+    3. validate the data is in json format
+    4. update the database with the json"""
+)
 
+analysis_agent = Agent(
+    name="analysis_agent",
+    model="gemini-3.1-flash-lite-preview",
+    description="Use information from the database to answer questions",
+    tools=[google_search, AgentTool(db_agent)],
+    generate_content_config=types.GenerateContentConfig(tool_config=my_tool_config)
+)
 # ==========================================
 # 3. The Top-Level Orchestrator Agent
 # ==========================================
@@ -132,7 +155,20 @@ orchestrator_agent = Agent(
         utility_cost: 100.00
         dependent_care: 0.00
     """,
-    tools=[AgentTool(scraper_agent), AgentTool(validator_agent), AgentTool(db_agent)]
+    # FIX 1: Remove db_agent from this list. It is already owned by scrape_pipeline.
+    sub_agents=[scrape_pipeline, analysis_agent],
+
+    # FIX 2: Add AgentTool(db_agent) so the orchestrator can talk to it directly for direct database questions.
+    # I also added AgentTool(scraper_agent) and AgentTool(validator_agent) because your instructions
+    # explicitly tell the orchestrator to call them!
+    tools=[
+        google_search,
+        AgentTool(analysis_agent),
+        AgentTool(db_agent),
+        AgentTool(scraper_agent),
+        AgentTool(validator_agent)
+    ],
+    generate_content_config=types.GenerateContentConfig(tool_config=my_tool_config)
 )
 
 
