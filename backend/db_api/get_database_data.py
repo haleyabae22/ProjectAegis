@@ -1,4 +1,4 @@
-from helper_funcs import get_database_data
+from helper_funcs import GetDatabaseData as gdd
 
 if __name__ == "__main__":
-    print(get_database_data())
+    print(gdd().__call__())
