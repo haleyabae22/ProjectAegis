@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { createBottomTabNavigator, BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { createNativeStackNavigator, NativeStackNavigationOptions } from "@react-navigation/native-stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { LandingScreen } from "../screens/LandingScreen";
 import { ImpactDashboardScreen } from "../screens/ImpactDashboardScreen";
 import { ProfileScreen } from "../screens/ProfileScreen";
@@ -24,17 +24,24 @@ export type HomeStackParamList = {
 
 const Tab = createBottomTabNavigator<AppTabParamList>();
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
+const TITLE_TOP_BUFFER = 48;
+const TITLE_LEFT_BUFFER = 24;
+const TITLE_BAR_HEIGHT = 84;
 
-const sharedHeaderOptions: NativeStackNavigationOptions = {
+const sharedHeaderOptions = {
   headerShown: true,
   headerStyle: {
     backgroundColor: "#001f3f",
   },
-  headerTitleAlign: "left",
+  headerTitleAlign: "left" as const,
   headerTintColor: "#D4AF37",
+  headerTitleContainerStyle: {
+    paddingTop: TITLE_TOP_BUFFER,
+    height: TITLE_BAR_HEIGHT,
+  },
   headerTitleStyle: {
-    fontWeight: "700",
-    fontSize: 30,
+    fontWeight: "700" as const,
+    fontSize: 35,
     color: "#D4AF37",
   },
   headerShadowVisible: false,
@@ -154,6 +161,10 @@ export function AppNavigator() {
             />
           ),
           ...sharedHeaderOptions,
+          headerTitleContainerStyle: {
+            height: TITLE_BAR_HEIGHT,
+            paddingLeft: TITLE_LEFT_BUFFER,
+          },
         }}
       />
 
@@ -171,6 +182,10 @@ export function AppNavigator() {
             />
           ),
           ...sharedHeaderOptions,
+          headerTitleContainerStyle: {
+            height: TITLE_BAR_HEIGHT,
+            paddingLeft: TITLE_LEFT_BUFFER,
+          },
         }}
       />
     </Tab.Navigator>
