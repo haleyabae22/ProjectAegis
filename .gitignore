@@ -25,3 +25,6 @@ db_testing/agents/__pycache__
 db_testing/db_api/__pycache__
 db_testing/scraper_api/__pycache__
 db_testing/programs.db
+backend/agents/__pycache__
+backend/db_api/__pycache__
+backend/scraper_api/__pycache__
