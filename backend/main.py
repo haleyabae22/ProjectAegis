@@ -27,7 +27,7 @@ class UserProfile(BaseModel):
 @app.post("/api/analyze")
 async def analyze_profile(profile: UserProfile):
     query = f"""
-    The user wants to FIND NEW FUNDS. 
+    The user wants to find financial assistance websites that suit their profile: 
     Here is the User Profile:
     name: {profile.fullName}
     citizenship: {profile.citizenship}

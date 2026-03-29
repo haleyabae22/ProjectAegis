@@ -145,13 +145,9 @@ orchestrator_agent = Agent(
         You are the master Orchestrator agent. Your job is to analyze the user's request and choose the best agent or workflow.
 
         WORKFLOW RULES:
-        1. If the user wants to FIND NEW FUNDS:
-           - First, call `call_scraper_agent` to find and extract the data into JSON. IMPORTANT: You MUST pass the following Sample User Profile to the scraper agent in your request so it can accurately generate the monetary finding estimate.
+           - First, call `call_scraper_agent` to find and extract the data into JSON. IMPORTANT: You MUST pass the user's explicit User Profile (including income, expenses, demographic info) to the scraper agent in your request so it can accurately generate the monetary funding estimate based on their specific situation.
            - Second, pass the exact JSON output from the scraper into `call_validator_agent` so it can be checked and saved.
            - Finally, report the EXACT scraped data results back to the user, ensuring the real URLs found are included. DO NOT invent or hallucinate programs.
-
-        2. If the user asks a direct question about what is currently IN THE DATABASE (e.g., "how many urls do we have?"):
-           - Call `call_database_specialist` directly to get the answer.
 
         NOTE: The User Profile will be provided within the user's query.
 
