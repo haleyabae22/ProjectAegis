@@ -254,11 +254,20 @@ export function LandingScreen({ navigation }: Props) {
   const { width } = useWindowDimensions();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [zipCode, setZipCode] = useState("");
+  const [citizenship, setCitizenship] = useState<"Yes" | "No" | "">("");
+  const [monthlyIncome, setMonthlyIncome] = useState("");
+  const [monthlyHousingCost, setMonthlyHousingCost] = useState("");
+  const [monthlyUtilityCost, setMonthlyUtilityCost] = useState("");
+  const [dependentCareCost, setDependentCareCost] = useState("");
   const isWideLayout = width >= 860;
 
-  const canSubmit = fullName.trim().length > 0 && email.trim().length > 0;
+  const canSubmit =
+    fullName.trim().length > 0 &&
+    citizenship !== "" &&
+    monthlyIncome.trim().length > 0 &&
+    monthlyHousingCost.trim().length > 0 &&
+    monthlyUtilityCost.trim().length > 0 &&
+    dependentCareCost.trim().length > 0;
 
   const handleSubmit = () => {
     if (!canSubmit) return;
@@ -277,40 +286,54 @@ export function LandingScreen({ navigation }: Props) {
         <View style={styles.contentSection}>
           <View style={[styles.contentRow, !isWideLayout && styles.contentRowStack]}>
             <View style={styles.paragraphBlock}>
-              <Text style={styles.paragraphTitle}>Benefits Overview</Text>
+              <Text style={styles.paragraphTitle}>Stop Looking Everywhere...</Text>
               <Text style={styles.paragraphText}>
-                Placeholder copy: this section explains how Aegis scans your profile, identifies benefit opportunities,
-                and provides a clear summary to help you take action with confidence.
+                Billions in aid go unclaimed every year. Aegis helps close that gap.
+                Our multi‑agent system scans the benefits landscape, identifies programs aligned with your needs, and shows your total potential impact in minutes.
               </Text>
             </View>
             <View style={styles.imagePlaceholder}>
-              <Text style={styles.imagePlaceholderText}>Image Placeholder 1</Text>
+              <Image
+                source={require("../../assets/globe_icon.png")}
+                style={styles.placeholderIcon}
+                resizeMode="contain"
+              />
             </View>
           </View>
+
+          <View style={styles.sectionDivider} />
 
           <View style={[styles.contentRow, styles.contentRowReverse, !isWideLayout && styles.contentRowStack]}>
             <View style={styles.paragraphBlock}>
-              <Text style={styles.paragraphTitle}>Personalized Recommendations</Text>
+              <Text style={styles.paragraphTitle}>Your benefits, decoded.</Text>
               <Text style={styles.paragraphText}>
-                Placeholder copy: this area highlights tailored programs, estimated monthly impact, and what documents
-                are needed next so users can quickly move from discovery to enrollment.
+                Aegis transforms complex government criteria into clear, personalized recommendations — showing you how much support you could unlock and what to do next.
               </Text>
             </View>
             <View style={styles.imagePlaceholder}>
-              <Text style={styles.imagePlaceholderText}>Image Placeholder 2</Text>
+              <Image
+                source={require("../../assets/report_icon.png")}
+                style={styles.placeholderIcon}
+                resizeMode="contain"
+              />
             </View>
           </View>
 
+          <View style={styles.sectionDivider} />
+
           <View style={[styles.contentRow, !isWideLayout && styles.contentRowStack]}>
             <View style={styles.paragraphBlock}>
-              <Text style={styles.paragraphTitle}>Guided Support</Text>
+              <Text style={styles.paragraphTitle}>Turning eligibility into real outcomes.</Text>
               <Text style={styles.paragraphText}>
-                Placeholder copy: this section can showcase support channels, live expert availability, and step-by-step
-                follow-up so users know exactly what to do after they receive results.
+                Aegis doesn’t stop at recommendations — our system walks you through the process, ensuring you can actually access the support you qualify for.
               </Text>
             </View>
             <View style={styles.imagePlaceholder}>
-              <Text style={styles.imagePlaceholderText}>Image Placeholder 3</Text>
+              <Image
+                source={require("../../assets/walk_icon.png")}
+                style={styles.placeholderIcon}
+                resizeMode="contain"
+              />
             </View>
           </View>
         </View>
@@ -325,29 +348,69 @@ export function LandingScreen({ navigation }: Props) {
       >
         <View style={styles.modalBackdrop}>
           <View style={styles.modalCard}>
-            <Text style={styles.modalTitle}>Service Intake Form</Text>
+            <Text style={styles.modalTitle}>User Information Form</Text>
 
             <TextInput
               value={fullName}
               onChangeText={setFullName}
-              placeholder="Full name"
-              placeholderTextColor={colors.onSurfaceVariant}
+              placeholder="Full Name"
+              placeholderTextColor={GOLD_DARK}
+              style={styles.input}
+            />
+
+            <Text style={styles.fieldLabel}>Citizenship</Text>
+            <View style={styles.choiceRow}>
+              <Pressable
+                style={[styles.choiceButton, citizenship === "Yes" && styles.choiceButtonActive]}
+                onPress={() => setCitizenship("Yes")}
+              >
+                <Text
+                  style={[styles.choiceButtonText, citizenship === "Yes" && styles.choiceButtonTextActive]}
+                >
+                  Yes
+                </Text>
+              </Pressable>
+              <Pressable
+                style={[styles.choiceButton, citizenship === "No" && styles.choiceButtonActive]}
+                onPress={() => setCitizenship("No")}
+              >
+                <Text
+                  style={[styles.choiceButtonText, citizenship === "No" && styles.choiceButtonTextActive]}
+                >
+                  No
+                </Text>
+              </Pressable>
+            </View>
+
+            <TextInput
+              value={monthlyIncome}
+              onChangeText={setMonthlyIncome}
+              placeholder="Monthly Income"
+              placeholderTextColor={GOLD_DARK}
+              keyboardType="number-pad"
               style={styles.input}
             />
             <TextInput
-              value={email}
-              onChangeText={setEmail}
-              placeholder="Email"
-              placeholderTextColor={colors.onSurfaceVariant}
-              autoCapitalize="none"
-              keyboardType="email-address"
+              value={monthlyHousingCost}
+              onChangeText={setMonthlyHousingCost}
+              placeholder="Monthly Housing Cost"
+              placeholderTextColor={GOLD_DARK}
+              keyboardType="number-pad"
               style={styles.input}
             />
             <TextInput
-              value={zipCode}
-              onChangeText={setZipCode}
-              placeholder="ZIP code"
-              placeholderTextColor={colors.onSurfaceVariant}
+              value={monthlyUtilityCost}
+              onChangeText={setMonthlyUtilityCost}
+              placeholder="Monthly Utility Cost"
+              placeholderTextColor={GOLD_DARK}
+              keyboardType="number-pad"
+              style={styles.input}
+            />
+            <TextInput
+              value={dependentCareCost}
+              onChangeText={setDependentCareCost}
+              placeholder="Dependent Care Cost"
+              placeholderTextColor={GOLD_DARK}
               keyboardType="number-pad"
               style={styles.input}
             />
@@ -373,7 +436,7 @@ export function LandingScreen({ navigation }: Props) {
 
 // ─── Styles (content section + modal — unchanged from original) ───────────────
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#ffffff" },
+  root: { flex: 1, backgroundColor: "#001f3f" },
   page: { flex: 1 },
   content: {
     paddingHorizontal: 0,
@@ -382,7 +445,7 @@ const styles = StyleSheet.create({
   },
   contentSection: {
     width: "100%",
-    backgroundColor: "#ffffff",
+    backgroundColor: "#001f3f",
     paddingHorizontal: spacing[4],
     paddingTop: spacing[8],
     paddingBottom: spacing[12],
@@ -399,34 +462,48 @@ const styles = StyleSheet.create({
   contentRowStack: {
     flexDirection: "column",
   },
+  sectionDivider: {
+    width: "100%",
+    height: 3,
+    borderRadius: 999,
+    backgroundColor: GOLD,
+    opacity: 0.65,
+  },
   paragraphBlock: {
     flex: 1,
     gap: spacing[2],
     justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 144,
   },
   paragraphTitle: {
     ...typography.headlineSm,
-    color: colors.onSurface,
-    fontSize: 20,
+    color: GOLD,
+    fontSize: 40,
+    textAlign: "center",
   },
   paragraphText: {
     ...typography.bodyMd,
-    color: colors.onSurfaceVariant,
-    lineHeight: 24,
+    color: GOLD_LIGHT,
+    fontSize: 32,
+    lineHeight: 48,
+    textAlign: "center",
   },
   imagePlaceholder: {
     flex: 1,
-    minHeight: 220,
-    backgroundColor: colors.surfaceContainerLowest,
+    minHeight: 660,
+    backgroundColor: "#001f3f",
     borderRadius: radius.md,
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: colors.outlineVariant,
   },
   imagePlaceholderText: {
     ...typography.labelLg,
     color: colors.onSurfaceVariant,
+  },
+  placeholderIcon: {
+    width: "96%",
+    height: "96%",
   },
   modalBackdrop: {
     flex: 1,
@@ -436,25 +513,56 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing[4],
   },
   modalCard: {
-    width: "100%",
-    maxWidth: 360,
+    width: "96%",
+    maxWidth: 900,
     backgroundColor: colors.surfaceContainerLowest,
     borderRadius: radius.lg,
-    padding: spacing[4],
+    borderWidth: 2,
+    borderColor: GOLD,
+    padding: spacing[6],
     gap: spacing[3],
   },
   modalTitle: {
     ...typography.headlineSm,
-    color: colors.onSurface,
+    color: GOLD,
   },
   input: {
     minHeight: 44,
     borderRadius: radius.md,
     borderWidth: 1,
-    borderColor: colors.outlineVariant,
+    borderColor: GOLD,
     paddingHorizontal: spacing[3],
-    color: colors.onSurface,
+    color: GOLD,
     backgroundColor: colors.surface,
+  },
+  fieldLabel: {
+    ...typography.labelLg,
+    color: GOLD,
+  },
+  choiceRow: {
+    flexDirection: "row",
+    gap: spacing[2],
+  },
+  choiceButton: {
+    flex: 1,
+    minHeight: 40,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.surface,
+  },
+  choiceButtonActive: {
+    backgroundColor: GOLD,
+    borderColor: GOLD,
+  },
+  choiceButtonText: {
+    ...typography.labelLg,
+    color: GOLD,
+  },
+  choiceButtonTextActive: {
+    color: "#ffffff",
   },
   modalActions: {
     flexDirection: "row",
@@ -469,7 +577,7 @@ const styles = StyleSheet.create({
   },
   ghostButtonText: {
     ...typography.labelLg,
-    color: colors.onSurfaceVariant,
+    color: GOLD,
   },
   submitButton: {
     minHeight: 40,
@@ -485,6 +593,6 @@ const styles = StyleSheet.create({
   },
   submitButtonText: {
     ...typography.labelLg,
-    color: colors.onPrimary,
+    color: GOLD,
   },
 }); 

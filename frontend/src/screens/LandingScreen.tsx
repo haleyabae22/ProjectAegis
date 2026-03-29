@@ -82,9 +82,15 @@ export function LandingScreen({ navigation }: Props) {
               </Text>
             </View>
             <View style={styles.imagePlaceholder}>
-              <Text style={styles.imagePlaceholderText}>Image Placeholder 1</Text>
+              <Image
+                source={require("../../assets/globe_icon.png")}
+                style={styles.placeholderIcon}
+                resizeMode="contain"
+              />
             </View>
           </View>
+
+          <View style={styles.sectionDivider} />
 
           <View style={[styles.contentRow, styles.contentRowReverse, !isWideLayout && styles.contentRowStack]}>
             <View style={styles.paragraphBlock}>
@@ -95,9 +101,15 @@ export function LandingScreen({ navigation }: Props) {
               </Text>
             </View>
             <View style={styles.imagePlaceholder}>
-              <Text style={styles.imagePlaceholderText}>Image Placeholder 2</Text>
+              <Image
+                source={require("../../assets/report_icon.png")}
+                style={styles.placeholderIcon}
+                resizeMode="contain"
+              />
             </View>
           </View>
+
+          <View style={styles.sectionDivider} />
 
           <View style={[styles.contentRow, !isWideLayout && styles.contentRowStack]}>
             <View style={styles.paragraphBlock}>
@@ -107,7 +119,11 @@ export function LandingScreen({ navigation }: Props) {
               </Text>
             </View>
             <View style={styles.imagePlaceholder}>
-              <Text style={styles.imagePlaceholderText}>Image Placeholder 3</Text>
+              <Image
+                source={require("../../assets/walk_icon.png")}
+                style={styles.placeholderIcon}
+                resizeMode="contain"
+              />
             </View>
           </View>
         </View>
@@ -127,7 +143,7 @@ export function LandingScreen({ navigation }: Props) {
               value={fullName}
               onChangeText={setFullName}
               placeholder="Full Name"
-              placeholderTextColor={colors.onSurfaceVariant}
+              placeholderTextColor="#9A7B1C"
               style={styles.input}
             />
 
@@ -159,7 +175,7 @@ export function LandingScreen({ navigation }: Props) {
               value={monthlyIncome}
               onChangeText={setMonthlyIncome}
               placeholder="Monthly Income"
-              placeholderTextColor={colors.onSurfaceVariant}
+              placeholderTextColor="#9A7B1C"
               keyboardType="number-pad"
               style={styles.input}
             />
@@ -167,7 +183,7 @@ export function LandingScreen({ navigation }: Props) {
               value={monthlyHousingCost}
               onChangeText={setMonthlyHousingCost}
               placeholder="Monthly Housing Cost"
-              placeholderTextColor={colors.onSurfaceVariant}
+              placeholderTextColor="#9A7B1C"
               keyboardType="number-pad"
               style={styles.input}
             />
@@ -175,7 +191,7 @@ export function LandingScreen({ navigation }: Props) {
               value={monthlyUtilityCost}
               onChangeText={setMonthlyUtilityCost}
               placeholder="Monthly Utility Cost"
-              placeholderTextColor={colors.onSurfaceVariant}
+              placeholderTextColor="#9A7B1C"
               keyboardType="number-pad"
               style={styles.input}
             />
@@ -183,7 +199,7 @@ export function LandingScreen({ navigation }: Props) {
               value={dependentCareCost}
               onChangeText={setDependentCareCost}
               placeholder="Dependent Care Cost"
-              placeholderTextColor={colors.onSurfaceVariant}
+              placeholderTextColor="#9A7B1C"
               keyboardType="number-pad"
               style={styles.input}
             />
@@ -208,7 +224,7 @@ export function LandingScreen({ navigation }: Props) {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#ffffff" },
+  root: { flex: 1, backgroundColor: "#001f3f" },
   page: { flex: 1 },
   content: {
     paddingHorizontal: 0,
@@ -301,7 +317,7 @@ const styles = StyleSheet.create({
   },
   contentSection: {
     width: "100%",
-    backgroundColor: "#ffffff",
+    backgroundColor: "#001f3f",
     paddingHorizontal: spacing[4],
     paddingTop: spacing[8],
     paddingBottom: spacing[12],
@@ -318,66 +334,82 @@ const styles = StyleSheet.create({
   contentRowStack: {
     flexDirection: "column"
   },
+  sectionDivider: {
+    width: "100%",
+    height: 3,
+    borderRadius: 999,
+    backgroundColor: "#D4AF37",
+    opacity: 0.65
+  },
   paragraphBlock: {
     flex: 1,
     gap: spacing[2],
-    justifyContent: "center"
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 144
   },
   paragraphTitle: {
     ...typography.headlineSm,
-    color: colors.onSurface,
-    fontSize: 20
+    color: "#D4AF37",
+    fontSize: 40,
+    textAlign: "center"
   },
   paragraphText: {
     ...typography.bodyMd,
-    color: colors.onSurfaceVariant,
-    lineHeight: 24
+    color: "#F5D76E",
+    fontSize: 32,
+    lineHeight: 48,
+    textAlign: "center"
   },
   imagePlaceholder: {
     flex: 1,
-    minHeight: 220,
-    backgroundColor: colors.surfaceContainerLowest,
+    minHeight: 660,
+    backgroundColor: "#001f3f",
     borderRadius: radius.md,
     justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: colors.outlineVariant
+    alignItems: "center"
   },
   imagePlaceholderText: {
     ...typography.labelLg,
     color: colors.onSurfaceVariant
+  },
+  placeholderIcon: {
+    width: "96%",
+    height: "96%"
   },
   modalBackdrop: {
     flex: 1,
     backgroundColor: "rgba(12, 30, 38, 0.45)",
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: spacing[5]
+    paddingHorizontal: spacing[4]
   },
   modalCard: {
-    width: "92%",
-    maxWidth: 460,
+    width: "96%",
+    maxWidth: 900,
     backgroundColor: colors.surfaceContainerLowest,
     borderRadius: radius.lg,
-    padding: spacing[5],
+    borderWidth: 2,
+    borderColor: "#D4AF37",
+    padding: spacing[6],
     gap: spacing[3]
   },
   modalTitle: {
     ...typography.headlineSm,
-    color: colors.onSurface
+    color: "#D4AF37"
   },
   input: {
     minHeight: 44,
     borderRadius: radius.md,
     borderWidth: 1,
-    borderColor: colors.outlineVariant,
+    borderColor: "#D4AF37",
     paddingHorizontal: spacing[3],
-    color: colors.onSurface,
+    color: "#D4AF37",
     backgroundColor: colors.surface
   },
   fieldLabel: {
     ...typography.labelLg,
-    color: colors.onSurface
+    color: "#D4AF37"
   },
   choiceRow: {
     flexDirection: "row",
@@ -394,15 +426,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface
   },
   choiceButtonActive: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary
+    backgroundColor: "#D4AF37",
+    borderColor: "#D4AF37"
   },
   choiceButtonText: {
     ...typography.labelLg,
-    color: colors.onSurfaceVariant
+    color: "#D4AF37"
   },
   choiceButtonTextActive: {
-    color: colors.onPrimary
+    color: "#ffffff"
   },
   modalActions: {
     flexDirection: "row",
@@ -417,7 +449,7 @@ const styles = StyleSheet.create({
   },
   ghostButtonText: {
     ...typography.labelLg,
-    color: colors.onSurfaceVariant
+    color: "#D4AF37"
   },
   submitButton: {
     minHeight: 40,
@@ -433,6 +465,6 @@ const styles = StyleSheet.create({
   },
   submitButtonText: {
     ...typography.labelLg,
-    color: colors.onPrimary
+    color: "#D4AF37"
   }
 });
