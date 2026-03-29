@@ -28,11 +28,11 @@ export function FundsFoundBanner({ total, matchCount = 3 }: Props) {
         Based on your profile, our agents have secured {matchCount} matches.
       </Text>
 
-      {/* CTA */}
+      {/* CTA
       <TouchableOpacity style={styles.cta} activeOpacity={0.85}>
         <Ionicons name="flash" size={16} color={colors.onPrimary} />
         <Text style={styles.ctaText}>Auto-Apply (1-Click)</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 }
