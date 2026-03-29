@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { colors, radius, shadow, spacing } from "../theme/colors";
 import { typography } from "../theme/typography";
 
@@ -25,22 +25,26 @@ export function StatusCard({
   textMuted = colors.onSurfaceVariant,
   variant  = "default",
 }: Props) {
+  const [isHovered, setIsHovered] = React.useState(false);
   const isGold = variant === "gold";
 
   // Dot color: use accent prop if explicitly passed, otherwise derive from variant
   const dotColor = accent ?? (isGold ? "#D4AF37" : "#D4AF37");
 
   return (
-    <View
+    <Pressable
       style={[
         styles.card,
         shadow,
+        isHovered && styles.cardHover,
         {
           backgroundColor: isGold ? "#D4AF37" : "#002061",
           borderWidth: 2,
           borderColor: "#D4AF37",
         },
       ]}
+      onHoverIn={() => setIsHovered(true)}
+      onHoverOut={() => setIsHovered(false)}
     >
       {/* Accent dot — kept from teammate's layout, color now token-driven */}
       <View style={[styles.dot, { backgroundColor: dotColor }]} />
@@ -69,7 +73,7 @@ export function StatusCard({
           {subtitle}
         </Text>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
@@ -85,6 +89,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // spacing-8 (32px) bottom margin replaces divider lines between cards
     marginBottom: spacing[8],
+  },
+  cardHover: {
+    borderColor: "#F5D76E",
+    shadowColor: "#D4AF37",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 14,
+    transform: [{ scale: 1.01 }],
+    elevation: 7,
   },
   dot: {
     width: 10,

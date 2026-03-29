@@ -6,6 +6,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Pressable,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -40,14 +41,19 @@ type MetricCardProps = {
 };
 
 function MetricCard({ label, value, variant }: MetricCardProps) {
+  const [isHovered, setIsHovered] = useState(false);
   const bg   = variant === "gold" ? GOLD      : BLUE;
   const clr  = variant === "gold" ? NAVY      : ON_NAVY;
   const subC = variant === "gold" ? NAVY_MID  : ON_NAVY_M;
   return (
-    <View style={[cardStyles.metricCard, { backgroundColor: bg }]}>
+    <Pressable
+      style={[cardStyles.metricCard, { backgroundColor: bg }, isHovered && cardStyles.metricCardHover]}
+      onHoverIn={() => setIsHovered(true)}
+      onHoverOut={() => setIsHovered(false)}
+    >
       <Text style={[cardStyles.metricLabel, { color: subC }]}>{label}</Text>
       <Text style={[cardStyles.metricValue, { color: clr }]}>{value}</Text>
-    </View>
+    </Pressable>
   );
 }
 
@@ -61,6 +67,15 @@ const cardStyles = StyleSheet.create({
     justifyContent: "space-between",
     borderWidth: 2,
     borderColor: GOLD,
+  },
+  metricCardHover: {
+    borderColor: "#F5D76E",
+    shadowColor: GOLD,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 12,
+    transform: [{ scale: 1.01 }],
+    elevation: 7,
   },
   metricLabel: {
     ...typography.bodyMd,
@@ -85,12 +100,17 @@ function ChartCard({
   subtitle?: string;
   children: React.ReactNode;
 }) {
+  const [isHovered, setIsHovered] = useState(false);
   return (
-    <View style={styles.chartCard}>
+    <Pressable
+      style={[styles.chartCard, isHovered && styles.chartCardHover]}
+      onHoverIn={() => setIsHovered(true)}
+      onHoverOut={() => setIsHovered(false)}
+    >
       <Text style={styles.chartTitle}>{title}</Text>
       {subtitle ? <Text style={styles.chartSubtitle}>{subtitle}</Text> : null}
       <View style={styles.chartBody}>{children}</View>
-    </View>
+    </Pressable>
   );
 }
 
@@ -123,6 +143,7 @@ export function ImpactDashboardScreen() {
   const [loading, setLoading]       = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError]           = useState<string | null>(null);
+  const [isTimelineHovered, setIsTimelineHovered] = useState(false);
 
   const load = useCallback(async (isRefresh = false) => {
     try {
@@ -213,7 +234,11 @@ export function ImpactDashboardScreen() {
       </ChartCard>
 
       {/* ── Automation timeline ── */}
-      <View style={styles.timelineCard}>
+      <Pressable
+        style={[styles.timelineCard, isTimelineHovered && styles.timelineCardHover]}
+        onHoverIn={() => setIsTimelineHovered(true)}
+        onHoverOut={() => setIsTimelineHovered(false)}
+      >
         <Text style={styles.timelineTitle}>Automation Timeline</Text>
         <TimelineItem
           text="SNAP Recertification: Auto-submit in 9 days"
@@ -227,7 +252,7 @@ export function ImpactDashboardScreen() {
           text="Rent Relief: Eligibility window opens next Monday"
           tone="blue"
         />
-      </View>
+      </Pressable>
     </ScrollView>
   );
 }
@@ -302,6 +327,15 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: GOLD,
   },
+  chartCardHover: {
+    borderColor: "#F5D76E",
+    shadowColor: GOLD,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 14,
+    transform: [{ scale: 1.005 }],
+    elevation: 7,
+  },
   chartTitle: {
     ...typography.headlineSm,
     color: GOLD,
@@ -328,6 +362,15 @@ const styles = StyleSheet.create({
     gap: spacing[6],
     borderWidth: 2,
     borderColor: GOLD,
+  },
+  timelineCardHover: {
+    borderColor: "#F5D76E",
+    shadowColor: GOLD,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 14,
+    transform: [{ scale: 1.005 }],
+    elevation: 7,
   },
   timelineTitle: {
     ...typography.headlineSm,

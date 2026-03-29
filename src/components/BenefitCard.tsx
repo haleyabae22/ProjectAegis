@@ -1,7 +1,7 @@
 // src/components/BenefitCard.tsx
 
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors, radius, shadow, spacing } from "../theme/colors";
 import { typography } from "../theme/typography";
@@ -59,10 +59,15 @@ export function BenefitCard({
   status,
   tags,
 }: BenefitCardProps) {
+  const [isHovered, setIsHovered] = React.useState(false);
   const pill = matchPillStyle(matchPercent);
 
   return (
-    <View style={styles.card}>
+    <Pressable
+      style={[styles.card, isHovered && styles.cardHover]}
+      onHoverIn={() => setIsHovered(true)}
+      onHoverOut={() => setIsHovered(false)}
+    >
       {/* Icon */}
       <View style={[styles.iconBox, { backgroundColor: ICON_BG[icon] ?? "#f0f4f8" }]}>
         <Ionicons
@@ -104,7 +109,7 @@ export function BenefitCard({
           }
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
@@ -120,6 +125,15 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#D4AF37",
     ...shadow,
+  },
+  cardHover: {
+    borderColor: "#F5D76E",
+    shadowColor: "#D4AF37",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.55,
+    shadowRadius: 14,
+    transform: [{ scale: 1.01 }],
+    elevation: 8,
   },
 
   iconBox: {

@@ -1,14 +1,19 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { colors } from "../theme/colors";
 
 export function LiveAgentBanner() {
+  const [isHovered, setIsHovered] = React.useState(false);
   return (
-    <View style={styles.container}>
+    <Pressable
+      style={[styles.container, isHovered && styles.containerHover]}
+      onHoverIn={() => setIsHovered(true)}
+      onHoverOut={() => setIsHovered(false)}
+    >
       <View style={styles.dot} />
       <Text style={styles.text}>Policy Agent is scanning for eligibility changes...</Text>
-    </View>
+    </Pressable>
   );
 }
 
@@ -22,6 +27,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8
+  },
+  containerHover: {
+    borderColor: "#F5D76E",
+    shadowColor: "#D4AF37",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.45,
+    shadowRadius: 12,
+    transform: [{ scale: 1.01 }],
+    elevation: 6,
   },
   dot: {
     width: 10,

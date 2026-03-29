@@ -13,7 +13,7 @@ import { typography } from "../theme/typography";
 
 export type AppTabParamList = {
   Home: undefined;
-  Security: undefined;
+  "Impact Dashboard": undefined;
   Profile: undefined;
 };
 
@@ -141,11 +141,11 @@ export function AppNavigator() {
       />
 
       <Tab.Screen
-        name="Security"
+        name="Impact Dashboard"
         component={ImpactDashboardScreen}
         options={{
           title: "Impact Dashboard",
-          tabBarLabel: "Security",
+          tabBarLabel: "Impact Dashboard",
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? "shield-checkmark" : "shield-checkmark-outline"}

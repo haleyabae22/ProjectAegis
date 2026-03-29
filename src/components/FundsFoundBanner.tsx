@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors, radius, spacing } from "../theme/colors";
 import { typography } from "../theme/typography";
@@ -10,8 +10,13 @@ type Props = {
 };
 
 export function FundsFoundBanner({ total, matchCount = 3 }: Props) {
+  const [isHovered, setIsHovered] = React.useState(false);
   return (
-    <View style={styles.card}>
+    <Pressable
+      style={[styles.card, isHovered && styles.cardHover]}
+      onHoverIn={() => setIsHovered(true)}
+      onHoverOut={() => setIsHovered(false)}
+    >
       {/* Badge */}
       <View style={styles.badge}>
         <Text style={styles.badgeText}>ACTIVE PROTECTION</Text>
@@ -33,7 +38,7 @@ export function FundsFoundBanner({ total, matchCount = 3 }: Props) {
         <Ionicons name="flash" size={16} color={colors.onPrimary} />
         <Text style={styles.ctaText}>Auto-Apply (1-Click)</Text>
       </TouchableOpacity> */}
-    </View>
+    </Pressable>
   );
 }
 
@@ -46,6 +51,15 @@ const styles = StyleSheet.create({
     marginBottom: spacing[4],
     borderWidth: 2,
     borderColor: "#D4AF37",
+  },
+  cardHover: {
+    borderColor: "#F5D76E",
+    shadowColor: "#D4AF37",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 14,
+    transform: [{ scale: 1.01 }],
+    elevation: 7,
   },
   badge: {
     alignSelf: "flex-start",
