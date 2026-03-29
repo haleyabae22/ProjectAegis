@@ -46,7 +46,22 @@ def add_program(url: str, desc: str, money: float, rate: str) -> str:
             return f"Successfully added {url} to the database."
     except Exception as e:
         return f"Database error: {str(e)}"
-
+    
+def retrieve_program(url: str, desc: str, money: float, rate: str) -> dict:
+    """
+    Retrieves given database information.
+    """
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM programs WHERE url = ? AND desc = ? AND money = ? AND rate = ?;", (url, desc, money, rate))
+        row = cursor.fetchone()
+        if row:
+            columns = [col[0] for col in cursor.description]
+            result = dict(zip(columns, row))
+            print(result)
+            return result
+        return None
+    
 def retrieve_used_urls() -> list:
     """
     Retrieves a list of all the URLs currently stored in the database.
