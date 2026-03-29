@@ -67,66 +67,39 @@ url_search_agent = Agent(
 scraper_agent = Agent(
     name="scraper_agent",
     model="gemini-2.5-pro",
-    description="Extracts data from funding program websites into JSON format using advanced browser automation.",
+    description="Extracts data from funding program websites into JSON format.",
     instruction="""
-        You are an advanced web scraping and extraction agent equipped with dynamic browser automation tools. 
-        Your job is to navigate, interact with, and extract government funding program details for eligible individuals.
-
-        CRITICAL WORKFLOW:
-        1. **Source & Filter URLs:** - Call `call_url_search_agent` to get a list of potential government funding program URLs.
-           - Call `call_database_specialist` to get a list of already processed URLs.
-           - Filter out any URLs that are already in the database. Proceed with a maximum of 5 new URLs at a time.
-
-        2. **Navigate & Analyze (For each URL):**
-           - Use the `GoToUrl` tool to load the target webpage.
-           - Use the `AnalyzeWebpageAndDetermineAction` tool to understand the page structure and figure out where the funding details are located.
-
-        3. **Dynamic Interaction (If required):**
-           - If the information is hidden behind menus, tabs, or requires scrolling, use your browser tools:
-             - Use `ScrollDown` to load lazy-loaded content or see more of the page.
-             - Use `FindElementWithText` and `ClickElementWithText` to open accordions, navigate to "Eligibility" or "Funding Amounts" tabs, or bypass pop-ups.
-             - If there is a search bar to find specific user criteria, use `EnterTextIntoElement`.
-           - If you are stuck or need to see the current visual state, you may use `TakeScreenshot` to log the state.
-
-        4. **Data Extraction:**
-           - Once the relevant funding and eligibility text is visible on the page, use `GetPageSource` or `ScrapeUrl` to read the raw data.
-           - Calculate and format the following fields based on the Sample User Profile provided by the orchestrator:
-             - "desc": Details of the gov funding program and who is eligible.
-             - "amount": A monetary estimate (NUMBER ONLY) representing how much money the program potentially offers to this specific user.
-             - "rate": How often money is disbursed (strictly "monthly", "yearly", or "one-time").
-             - "url": The exact source URL of the web page.
-
-        5. **Strict JSON Output:**
-           - Output the final extracted data STRICTLY as a JSON array of objects. 
-           - DO NOT wrap the output in markdown code blocks (e.g., no ```json ... ```). Output raw JSON only.
-                   when adding to the data base you will get in json format
-        {
-            "url": "www.example.com",
-            "desc": "Funding for low income families",
-            "amount": 300,
-            "rate": "monthly"
-        }
-
+    You are a web scraping and extraction agent. Your job is to extract government funding program details.
+    
+    CRITICAL WORKFLOW:
+    1. Ask the `call_url_search_agent` to find potential government funding program URLs on the internet.
+    2. Request the Database Specialist (`call_database_specialist`) to provide all already 'used URLs' via the appropriate tool.
+    3. Filter out any URLs provided by the `call_url_search_agent` that are already present in the database.
+    4. Explore web pages and gather as much information as possible through your web scrapping tools
+    5. Extract the following information:
+    - "desc": Details of the gov funding program and who is eligible.
+    - "amount": A monetary estimate (number only) representing how much money the program potentially offers, calculated based on the user profile provided to you in the prompt.
+    - "rate": How often money is disbursed (monthly, yearly, or one-time).
+    - "url": The source URL of the web page scrapped from.
+    6. Output the extracted data STRICTLY in JSON format. Do not add markdown formatting outside the JSON.
     """,
-    tools=[
-        AgentTool(url_search_agent),
-        AgentTool(db_agent),
-        ScrapeUrl(),
-        GoToUrl(),
-        TakeScreenshot(),
-        FindElementWithText(),
-        ClickElementWithText(),
-        EnterTextIntoElement(),
-        ScrollDown(),
-        GetPageSource(),
-        AnalyzeWebpageAndDetermineAction()
-    ],
+
+    tools=[AgentTool(url_search_agent),
+    AgentTool(db_agent),
+    ScrapeUrl(),
+    GoToUrl(),
+    TakeScreenshot(),
+    FindElementWithText(),
+    ClickElementWithText(),
+    EnterTextIntoElement(),
+    ScrollDown(),
+    GetPageSource(),
+    AnalyzeWebpageAndDetermineAction()],
     generate_content_config=types.GenerateContentConfig(
-        tool_config=types.ToolConfig(
-            function_calling_config=types.FunctionCallingConfig(mode="AUTO"),
-            include_server_side_tool_invocations=False
-        )
-    ),
+    tool_config=types.ToolConfig(
+        function_calling_config=types.FunctionCallingConfig(mode="AUTO"),
+        include_server_side_tool_invocations=False # <-- Set to False
+    )),
 )
 
 # --- Validator Agent ---
