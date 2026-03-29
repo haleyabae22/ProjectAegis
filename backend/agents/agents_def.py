@@ -203,7 +203,7 @@ orchestrator_agent = Agent(
 # ==========================================
 
 async def run_orchestrator(query: str):
-    print(f"\n🗣️ User Query: '{query}'")
+    print(f"\nUser Query: '{query}'")
 
     session_service = InMemorySessionService()
     session = await session_service.create_session(

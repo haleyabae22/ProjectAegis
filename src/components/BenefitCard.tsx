@@ -57,6 +57,7 @@ export function BenefitCard({
   amount,
   description,
   matchPercent,
+  url,
   status,
   tags,
 }: BenefitCardProps) {
