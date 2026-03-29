@@ -16,6 +16,7 @@ export type Benefit = {
   amount: string;
   description: string;
   matchPercent: number;
+  url: string;
   tags: string[];
 };
 

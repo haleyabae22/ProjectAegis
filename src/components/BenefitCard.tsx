@@ -1,7 +1,7 @@
 // src/components/BenefitCard.tsx
 
 import React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View, Linking } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors, radius, shadow, spacing } from "../theme/colors";
 import { typography } from "../theme/typography";
@@ -46,6 +46,7 @@ type BenefitCardProps = {
   amount: string;
   description: string;
   matchPercent: number;
+  url?: string;
   status?: string;
   tags?: string[];
 };
@@ -62,11 +63,18 @@ export function BenefitCard({
   const [isHovered, setIsHovered] = React.useState(false);
   const pill = matchPillStyle(matchPercent);
 
+  const handlePress = () => {
+    if (url) {
+      Linking.openURL(url).catch((err) => console.error("Could not open URL", err));
+    }
+  };
+
   return (
     <Pressable
       style={[styles.card, isHovered && styles.cardHover]}
       onHoverIn={() => setIsHovered(true)}
       onHoverOut={() => setIsHovered(false)}
+      onPress={handlePress}
     >
       {/* Icon */}
       <View style={[styles.iconBox, { backgroundColor: ICON_BG[icon] ?? "#f0f4f8" }]}>

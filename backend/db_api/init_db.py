@@ -1,7 +1,7 @@
 import sqlite3
 import os
 
-DB_FILE = "../programs.db"
+DB_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "programs.db")
 
 # Delete the database file if it exists to ensure a clean start
 if os.path.exists(DB_FILE):

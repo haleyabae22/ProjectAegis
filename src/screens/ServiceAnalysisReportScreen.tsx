@@ -82,6 +82,7 @@ export function ServiceAnalysisReportScreen() {
                 amount={b.amount}
                 description={b.description}
                 matchPercent={b.matchPercent}
+                url={b.url}
                 tags={b.tags}
               />
             )) : (

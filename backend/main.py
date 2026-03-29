@@ -37,6 +37,9 @@ async def analyze_profile(profile: UserProfile):
     dependent_care: {profile.dependentCareCost}
     
     IMPORTANT: You must output the final results to the user strictly as a raw JSON array of objects with the exact keys below. DO NOT wrap with markdown, just output pure JSON.
+    You MUST ONLY return real websites and programs that were verified and scraped by the scraper_agent. Do NOT hallucinate listings or return generic descriptions.
+    The "icon" value must be STRICTLY one of the following: "food", "energy", "housing", "health".
+
     Format:
     [{{
         "icon": "food",
@@ -44,6 +47,7 @@ async def analyze_profile(profile: UserProfile):
         "amount": "$450/mo",
         "description": "Short description.",
         "matchPercent": 98,
+        "url": "https://www.example.com/apply",
         "tags": ["TAG 1", "TAG 2"]
     }}]
     """

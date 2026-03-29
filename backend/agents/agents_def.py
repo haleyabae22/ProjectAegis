@@ -151,15 +151,7 @@ validator_agent = Agent(
     generate_content_config=types.GenerateContentConfig(tool_config=my_tool_config)
 )
 
-scrape_pipeline = SequentialAgent(
-    name="scrape_pipeline",
-    sub_agents=[url_search_agent, scraper_agent, validator_agent, db_agent],
-    description="""Workflow
-    1. Find online funding resources for individuals and families
-    2. Scrape the found urls and format in json to update database
-    3. validate the data is in json format
-    4. update the database with the json"""
-)
+# Sequential Pipeline (Deprecated) - Orchestrator dynamically routes to scraper and db directly.
 
 analysis_agent = Agent(
     name="analysis_agent",
@@ -183,7 +175,7 @@ orchestrator_agent = Agent(
         1. If the user wants to FIND NEW FUNDS:
            - First, call `call_scraper_agent` to find and extract the data into JSON. IMPORTANT: You MUST pass the following Sample User Profile to the scraper agent in your request so it can accurately generate the monetary finding estimate.
            - Second, pass the exact JSON output from the scraper into `call_validator_agent` so it can be checked and saved.
-           - Finally, report the results back to the user.
+           - Finally, report the EXACT scraped data results back to the user, ensuring the real URLs found are included. DO NOT invent or hallucinate programs.
 
         2. If the user asks a direct question about what is currently IN THE DATABASE (e.g., "how many urls do we have?"):
            - Call `call_database_specialist` directly to get the answer.
@@ -191,8 +183,7 @@ orchestrator_agent = Agent(
         NOTE: The User Profile will be provided within the user's query.
 
     """,
-    # FIX 1: Remove db_agent from this list. It is already owned by scrape_pipeline.
-    sub_agents=[scrape_pipeline, analysis_agent],
+    sub_agents=[analysis_agent],
 
     # FIX 2: Add AgentTool(db_agent) so the orchestrator can talk to it directly for direct database questions.
     # I also added AgentTool(scraper_agent) and AgentTool(validator_agent) because your instructions
