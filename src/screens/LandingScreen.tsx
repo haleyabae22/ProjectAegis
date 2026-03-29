@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
+  Animated,
+  Easing,
   Modal,
   Pressable,
   ScrollView,
@@ -8,7 +10,7 @@ import {
   TextInput,
   useWindowDimensions,
   View,
-  Image
+  Image,
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
@@ -16,8 +18,238 @@ import { HomeStackParamList } from "../navigation/AppNavigator";
 import { colors, radius, spacing } from "../theme/colors";
 import { typography } from "../theme/typography";
 
+// ─── Asset imports ────────────────────────────────────────────────────────────
+// Adjust paths to match your project structure
+const MEDUSA = require("../../assets/medusa.png");
+const PILLAR = require("../../assets/goldColumn.png");
+
+// ─── Palette (from AegisWelcome) ─────────────────────────────────────────────
+const GOLD       = "#D4AF37";
+const GOLD_LIGHT = "#F5D76E";
+const GOLD_DARK  = "#9A7B1C";
+const NAVY       = "#0D1B4B";
+const NAVY_DEEP  = "#080F2E";
+
+// ─── Types ────────────────────────────────────────────────────────────────────
 type Props = NativeStackScreenProps<HomeStackParamList, "Landing">;
 
+// ─── AegisHero sub-component ─────────────────────────────────────────────────
+function AegisHero({ onStart }: { onStart: () => void }) {
+  const glowAnim = useRef(new Animated.Value(0)).current;
+  const [pressed, setPressed] = useState(false);
+
+  useEffect(() => {
+    Animated.loop(
+    Animated.sequence([
+      Animated.timing(glowAnim, {
+        toValue: 1,
+        duration: 700, // faster
+        easing: Easing.inOut(Easing.ease),
+        useNativeDriver: false,
+      }),
+      Animated.timing(glowAnim, {
+        toValue: 0,
+        duration: 700,
+        easing: Easing.inOut(Easing.ease),
+        useNativeDriver: false,
+      }),
+    ])
+  ).start();
+  }, []);
+
+  // Interpolate glow shadow radius for the medallion wrapper
+  const glowShadowRadius = glowAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [14, 36],
+  });
+  const glowOpacity = glowAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.35, 0.75],
+  });
+
+  return (
+    <View style={heroStyles.root}>
+      {/* Corner ornaments */}
+      <View style={[heroStyles.corner, { top: 12, left: 12, borderRightWidth: 0, borderBottomWidth: 0 }]} />
+      <View style={[heroStyles.corner, { top: 12, right: 12, borderLeftWidth: 0, borderBottomWidth: 0 }]} />
+      <View style={[heroStyles.corner, { bottom: 12, left: 12, borderRightWidth: 0, borderTopWidth: 0 }]} />
+      <View style={[heroStyles.corner, { bottom: 12, right: 12, borderLeftWidth: 0, borderTopWidth: 0 }]} />
+
+      {/* Row: left pillar | centre | right pillar */}
+      <View style={heroStyles.row}>
+        {/* Left pillar */}
+        <Image source={PILLAR} style={heroStyles.pillar} resizeMode="stretch" />
+
+        {/* Centre content */}
+        <View style={heroStyles.centre}>
+          {/* Medallion with animated glow */}
+          <Animated.View
+            style={[
+              heroStyles.medallionWrap,
+              {
+                shadowRadius: glowShadowRadius,
+                shadowOpacity: glowOpacity,
+              },
+            ]}
+          >
+            <Image source={MEDUSA} style={heroStyles.medallion} resizeMode="contain" />
+          </Animated.View>
+
+          {/* Subtitle */}
+          <Text style={heroStyles.subtitle}>Welcome to Aegis</Text>
+
+          {/* Divider */}
+          <View style={heroStyles.dividerRow}>
+            <View style={heroStyles.dividerLine} />
+            <View style={heroStyles.dividerDiamond} />
+            <View style={heroStyles.dividerLine} />
+          </View>
+
+          {/* CTA Button */}
+          <Pressable
+            style={({ pressed: p }) => [heroStyles.button, p && heroStyles.buttonPressed]}
+            onPressIn={() => setPressed(true)}
+            onPressOut={() => setPressed(false)}
+            onPress={onStart}
+          >
+            <Text style={heroStyles.buttonText}>Start</Text>
+          </Pressable>
+
+          {/* Inscription */}
+          <Text style={heroStyles.inscription}>Service · Intelligence · Benefits · Action</Text>
+        </View>
+
+        {/* Right pillar (mirrored) */}
+        <Image
+          source={PILLAR}
+          style={[heroStyles.pillar, { transform: [{ scaleX: -1 }] }]}
+          resizeMode="stretch"
+        />
+      </View>
+    </View>
+  );
+}
+
+const heroStyles = StyleSheet.create({
+  root: {
+    width: "100%",
+    backgroundColor: NAVY_DEEP,
+    paddingVertical: 28,
+    position: "relative",
+    borderBottomWidth: 2,
+    borderBottomColor: GOLD_DARK,
+    overflow: "hidden",
+  },
+  corner: {
+    position: "absolute",
+    width: 20,
+    height: 20,
+    borderWidth: 2,
+    borderColor: GOLD_DARK,
+    borderRadius: 3,
+    opacity: 0.7,
+    zIndex: 2,
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "stretch",
+  },
+  pillar: {
+  flex: 1,
+  height: "100%",       // take 3/4 of the row height
+  opacity: 0.85,
+  maxWidth: 720,
+  alignSelf: "center", // center vertically in the row
+  },
+  centre: {
+    flex: 1,         // centre column takes 1/3
+    alignItems: "center",
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    gap: 16,
+  },
+  medallionWrap: {
+    borderRadius: 160,
+    shadowColor: "#FFD700",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 0,
+    elevation: 12,
+    backgroundColor: "transparent",
+  },
+  medallion: {
+    width: 500,
+    height: 500,
+    borderRadius: 180,
+  },
+  subtitle: {
+    color: GOLD_LIGHT,
+    fontSize: 28,
+    fontStyle: "italic",
+    letterSpacing: 4,
+    fontFamily: "Georgia",
+    textShadowColor: "rgba(212,175,55,0.6)",
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 10,
+  },
+  dividerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "65%",
+    gap: 8,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1.5,
+    backgroundColor: GOLD_DARK,
+    opacity: 0.7,
+  },
+  dividerDiamond: {
+    width: 8,
+    height: 8,
+    backgroundColor: GOLD,
+    transform: [{ rotate: "45deg" }],
+    shadowColor: GOLD,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.9,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  button: {
+    backgroundColor: GOLD,
+    borderRadius: 8,
+    paddingVertical: 13,
+    paddingHorizontal: 56,
+    shadowColor: GOLD,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.45,
+    shadowRadius: 16,
+    elevation: 6,
+  },
+  buttonPressed: {
+    opacity: 0.82,
+    shadowOpacity: 0.2,
+  },
+  buttonText: {
+    color: NAVY_DEEP,
+    fontSize: 14,
+    fontWeight: "700",
+    letterSpacing: 5,
+    textTransform: "uppercase",
+    fontFamily: "Georgia",
+  },
+  inscription: {
+    color: GOLD_DARK,
+    fontSize: 10,
+    letterSpacing: 4,
+    textTransform: "uppercase",
+    opacity: 0.65,
+    fontFamily: "Georgia",
+    marginTop: 4,
+  },
+});
+
+// ─── LandingScreen ────────────────────────────────────────────────────────────
 export function LandingScreen({ navigation }: Props) {
   const { width } = useWindowDimensions();
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -29,10 +261,7 @@ export function LandingScreen({ navigation }: Props) {
   const canSubmit = fullName.trim().length > 0 && email.trim().length > 0;
 
   const handleSubmit = () => {
-    if (!canSubmit) {
-      return;
-    }
-
+    if (!canSubmit) return;
     setIsFormOpen(false);
     navigation.navigate("ServiceAnalysisReport");
   };
@@ -40,29 +269,11 @@ export function LandingScreen({ navigation }: Props) {
   return (
     <View style={styles.root}>
       <ScrollView style={styles.page} contentContainerStyle={styles.content}>
-        <View style={styles.heroZone}>
-          <View style={styles.heroContainer}>
-            <View style={styles.logoSection}>
-              <View style={styles.logoPlaceholder}>
-                <Image
-                  source={require("../../assets/aegis-logo.png")}
-                  style={styles.logoImage}
-                  resizeMode="contain"
-                />
-              </View>
-            </View>
 
-            <View style={styles.titleSection}>
-              <Text style={styles.mainTitle}>Aegis</Text>
-              <Text style={styles.subtitle}>Service intelligence for benefits, guidance, and action.</Text>
-            </View>
-          </View>
+        {/* ── Aegis Welcome Hero (top) ── */}
+        <AegisHero onStart={() => setIsFormOpen(true)} />
 
-          <Pressable style={styles.ctaButton} onPress={() => setIsFormOpen(true)}>
-            <Text style={styles.ctaButtonText}>Search Now!</Text>
-          </Pressable>
-        </View>
-
+        {/* ── Descriptive content (bottom) ── */}
         <View style={styles.contentSection}>
           <View style={[styles.contentRow, !isWideLayout && styles.contentRowStack]}>
             <View style={styles.paragraphBlock}>
@@ -105,6 +316,7 @@ export function LandingScreen({ navigation }: Props) {
         </View>
       </ScrollView>
 
+      {/* ── Intake Modal ── */}
       <Modal
         transparent
         animationType="fade"
@@ -113,7 +325,7 @@ export function LandingScreen({ navigation }: Props) {
       >
         <View style={styles.modalBackdrop}>
           <View style={styles.modalCard}>
-            <Text style={styles.modalTitle}>User Information Form</Text>
+            <Text style={styles.modalTitle}>Service Intake Form</Text>
 
             <TextInput
               value={fullName}
@@ -159,6 +371,7 @@ export function LandingScreen({ navigation }: Props) {
   );
 }
 
+// ─── Styles (content section + modal — unchanged from original) ───────────────
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: "#ffffff" },
   page: { flex: 1 },
@@ -167,123 +380,39 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     paddingBottom: spacing[8],
   },
-  heroZone: {
-    width: "100%",
-    backgroundColor: "#001f3f",
-    paddingHorizontal: spacing[6],
-    paddingTop: spacing[8],
-    paddingBottom: spacing[8],
-    justifyContent: "center",
-    alignItems: "center",
-    gap: spacing[6],
-    minHeight: 420
-  },
-  heroContainer: {
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: spacing[6]
-  },
-  logoSection: {
-    flex: 0,
-    width: "25%",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  logoPlaceholder: {
-    width: 172,
-    height: 172,
-    borderRadius: 86,
-    backgroundColor: "#002061",
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 6,
-    overflow: "hidden"
-  },
-  logoImage: {
-    width: "100%",
-    height: "100%"
-  },
-  logoText: {
-    fontSize: 60,
-    color: "#001f3f"
-  },
-  titleSection: {
-    flex: 1,
-    justifyContent: "center",
-    gap: spacing[2],
-    paddingLeft: spacing[2]
-  },
-  mainTitle: {
-    ...typography.displayLg,
-    color: "#D4AF37",
-    fontSize: 62,
-    fontWeight: "700",
-    letterSpacing: 1.4
-  },
-  subtitle: {
-    ...typography.bodyMd,
-    color: "#ffffff",
-    fontSize: 18,
-    maxWidth: 520,
-    opacity: 0.9
-  },
-  ctaButton: {
-    width: 260,
-    backgroundColor: "#D4AF37",
-    borderRadius: radius.lg,
-    minHeight: 54,
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
-    elevation: 3
-  },
-  ctaButtonText: {
-    ...typography.labelLg,
-    color: "#001f3f",
-    fontWeight: "600"
-  },
   contentSection: {
     width: "100%",
     backgroundColor: "#ffffff",
     paddingHorizontal: spacing[4],
     paddingTop: spacing[8],
     paddingBottom: spacing[12],
-    gap: spacing[8]
+    gap: spacing[8],
   },
   contentRow: {
     flexDirection: "row",
     alignItems: "stretch",
-    gap: spacing[4]
+    gap: spacing[4],
   },
   contentRowReverse: {
-    flexDirection: "row-reverse"
+    flexDirection: "row-reverse",
   },
   contentRowStack: {
-    flexDirection: "column"
+    flexDirection: "column",
   },
   paragraphBlock: {
     flex: 1,
     gap: spacing[2],
-    justifyContent: "center"
+    justifyContent: "center",
   },
   paragraphTitle: {
     ...typography.headlineSm,
     color: colors.onSurface,
-    fontSize: 20
+    fontSize: 20,
   },
   paragraphText: {
     ...typography.bodyMd,
     color: colors.onSurfaceVariant,
-    lineHeight: 24
+    lineHeight: 24,
   },
   imagePlaceholder: {
     flex: 1,
@@ -293,18 +422,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: colors.outlineVariant
+    borderColor: colors.outlineVariant,
   },
   imagePlaceholderText: {
     ...typography.labelLg,
-    color: colors.onSurfaceVariant
+    color: colors.onSurfaceVariant,
   },
   modalBackdrop: {
     flex: 1,
     backgroundColor: "rgba(12, 30, 38, 0.45)",
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: spacing[4]
+    paddingHorizontal: spacing[4],
   },
   modalCard: {
     width: "100%",
@@ -312,11 +441,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surfaceContainerLowest,
     borderRadius: radius.lg,
     padding: spacing[4],
-    gap: spacing[3]
+    gap: spacing[3],
   },
   modalTitle: {
     ...typography.headlineSm,
-    color: colors.onSurface
+    color: colors.onSurface,
   },
   input: {
     minHeight: 44,
@@ -325,22 +454,22 @@ const styles = StyleSheet.create({
     borderColor: colors.outlineVariant,
     paddingHorizontal: spacing[3],
     color: colors.onSurface,
-    backgroundColor: colors.surface
+    backgroundColor: colors.surface,
   },
   modalActions: {
     flexDirection: "row",
     justifyContent: "space-between",
-    gap: spacing[2]
+    gap: spacing[2],
   },
   ghostButton: {
     minHeight: 40,
     paddingHorizontal: spacing[3],
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   ghostButtonText: {
     ...typography.labelLg,
-    color: colors.onSurfaceVariant
+    color: colors.onSurfaceVariant,
   },
   submitButton: {
     minHeight: 40,
@@ -349,13 +478,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: colors.primary,
     borderRadius: radius.md,
-    marginLeft: "auto"
+    marginLeft: "auto",
   },
   submitButtonDisabled: {
-    opacity: 0.45
+    opacity: 0.45,
   },
   submitButtonText: {
     ...typography.labelLg,
-    color: colors.onPrimary
-  }
-});
+    color: colors.onPrimary,
+  },
+}); 
