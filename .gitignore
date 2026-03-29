@@ -5,7 +5,7 @@ node_modules/
 .expo/
 dist/
 web-build/
-
+.idea
 # local env files
 .env
 .env.*
