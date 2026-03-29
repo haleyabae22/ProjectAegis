@@ -4,7 +4,7 @@ import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 
 const tabMeta: Record<string, { label: string; icon: string }> = {
   Home: { label: "Home", icon: "home" },
-  Security: { label: "Security", icon: "shield" },
+  "Impact Dashboard": { label: "Impact Dashboard", icon: "shield" },
   Profile: { label: "Profile", icon: "user" }
 };
 

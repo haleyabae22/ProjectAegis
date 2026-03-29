@@ -136,7 +136,7 @@ export function AppNavigator() {
         name="Impact Dashboard"
         component={ImpactDashboardScreen}
         options={{
-          tabBarLabel: "Security",
+          tabBarLabel: "Impact Dashboard",
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? "shield-checkmark" : "shield-checkmark-outline"}

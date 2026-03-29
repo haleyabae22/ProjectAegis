@@ -14,7 +14,7 @@ import { typography } from "../theme/typography";
 
 export type AppTabParamList = {
   Home: undefined;
-  Security: undefined;
+  "Impact Dashboard": undefined;
   Profile: undefined;
 };
 
@@ -36,7 +36,7 @@ const sharedHeaderOptions = {
   headerTitleStyle: {
     ...typography.headlineSm,
     color: "#D4AF37",
-    fontWeight: "700",
+    fontWeight: "700" as const,
     fontSize: 50
   },
   headerTitleContainerStyle: {
@@ -48,7 +48,7 @@ const sharedHeaderOptions = {
     paddingLeft: 8
   },
   headerShadowVisible: false
-};
+} as const;
 
 function HomeStackNavigator() {
   return (
@@ -143,13 +143,13 @@ export function AppNavigator() {
         }}
       />
       <Tab.Screen
-        name="Security"
+        name="Impact Dashboard"
         component={ImpactDashboardScreen}
         options={{
           headerShown: true,
           title: "Impact Dashboard",
           ...sharedHeaderOptions,
-          tabBarLabel: "Security",
+          tabBarLabel: "Impact Dashboard",
           tabBarIcon: ({ focused, color, size }: { focused: boolean; color: string; size: number }) => (
             <Ionicons
               name={focused ? "shield-checkmark" : "shield-checkmark-outline"}
