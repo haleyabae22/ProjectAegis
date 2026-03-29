@@ -1,7 +1,6 @@
 /**
  * ImpactDashboardScreen.tsx
- * Integrates all 4 impact charts with dummy data from impactApi.
- * Swap getImpactData() for a real endpoint when the backend is ready.
+ * Color scheme: Dark Navy (#001F3F), Gold (#D4AF37), Blue (#185FA5)
  */
 
 import React, { useCallback, useEffect, useState } from "react";
@@ -23,24 +22,31 @@ import { ProgramBarChart }      from "../components/ProgramBarChart";
 import { OutcomeDonutChart }    from "../components/OutcomeDonutChart";
 import { MilestoneFunnelChart } from "../components/MilestoneFunnelChart";
 
-// ─── Palette (matches existing dashboard) ────────────────────────────────────
+// ─── Palette ─────────────────────────────────────────────────────────────────
+const NAVY      = "#001F3F";
+const NAVY_MID  = "#002E5C";   // slightly lighter navy for cards
+const BLUE      = "#185FA5";
 const GOLD      = "#D4AF37";
-const GOLD_DARK = "#9A7B1C";
+const GOLD_DIM  = "#9A7B1C";
+const ON_NAVY   = "#FFFFFF";
+const ON_NAVY_M = "rgba(255,255,255,0.7)";
 
-// ─── MetricCard (unchanged from original) ─────────────────────────────────────
+// ─── MetricCard ──────────────────────────────────────────────────────────────
 
 type MetricCardProps = {
   label: string;
   value: string;
-  bgColor?: string;
-  textColor?: string;
+  variant: "blue" | "gold";
 };
 
-function MetricCard({ label, value, bgColor, textColor }: MetricCardProps) {
+function MetricCard({ label, value, variant }: MetricCardProps) {
+  const bg   = variant === "gold" ? GOLD      : BLUE;
+  const clr  = variant === "gold" ? NAVY      : ON_NAVY;
+  const subC = variant === "gold" ? NAVY_MID  : ON_NAVY_M;
   return (
-    <View style={[cardStyles.metricCard, { backgroundColor: bgColor }, shadow]}>
-      <Text style={[cardStyles.metricLabel, { color: textColor }]}>{label}</Text>
-      <Text style={[cardStyles.metricValue, { color: textColor }]}>{value}</Text>
+    <View style={[cardStyles.metricCard, { backgroundColor: bg }]}>
+      <Text style={[cardStyles.metricLabel, { color: subC }]}>{label}</Text>
+      <Text style={[cardStyles.metricValue, { color: clr }]}>{value}</Text>
     </View>
   );
 }
@@ -56,15 +62,15 @@ const cardStyles = StyleSheet.create({
   },
   metricLabel: {
     ...typography.bodyMd,
-    opacity: 0.9,
+    fontSize: 11,
   },
   metricValue: {
     ...typography.headlineMd,
-    color: colors.onPrimary,
+    fontWeight: "700",
   },
 });
 
-// ─── Chart section wrapper ────────────────────────────────────────────────────
+// ─── Chart section wrapper ───────────────────────────────────────────────────
 
 function ChartCard({
   title,
@@ -84,22 +90,22 @@ function ChartCard({
   );
 }
 
-// ─── Loading / Error states ───────────────────────────────────────────────────
+// ─── Loading / Error states ──────────────────────────────────────────────────
 
 function LoadingState() {
   return (
-    <View style={styles.centred}>
-      <ActivityIndicator size="large" color={colors.primary} />
-      <Text style={styles.loadingText}>Loading impact data…</Text>
+    <View style={[styles.centred, { backgroundColor: NAVY }]}>
+      <ActivityIndicator size="large" color={GOLD} />
+      <Text style={[styles.loadingText, { color: ON_NAVY_M }]}>Loading impact data…</Text>
     </View>
   );
 }
 
 function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
   return (
-    <View style={styles.centred}>
-      <Text style={styles.errorText}>{message}</Text>
-      <Text style={styles.retryText} onPress={onRetry}>
+    <View style={[styles.centred, { backgroundColor: NAVY }]}>
+      <Text style={[styles.errorText, { color: ON_NAVY }]}>{message}</Text>
+      <Text style={[styles.retryText, { color: GOLD }]} onPress={onRetry}>
         Tap to retry
       </Text>
     </View>
@@ -109,10 +115,10 @@ function ErrorState({ message, onRetry }: { message: string; onRetry: () => void
 // ─── Main screen ─────────────────────────────────────────────────────────────
 
 export function ImpactDashboardScreen() {
-  const [data, setData]           = useState<ImpactData | null>(null);
-  const [loading, setLoading]     = useState(true);
+  const [data, setData]             = useState<ImpactData | null>(null);
+  const [loading, setLoading]       = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [error, setError]         = useState<string | null>(null);
+  const [error, setError]           = useState<string | null>(null);
 
   const load = useCallback(async (isRefresh = false) => {
     try {
@@ -145,7 +151,7 @@ export function ImpactDashboardScreen() {
         <RefreshControl
           refreshing={refreshing}
           onRefresh={() => load(true)}
-          tintColor={colors.primary}
+          tintColor={GOLD}
         />
       }
     >
@@ -160,30 +166,10 @@ export function ImpactDashboardScreen() {
       {/* ── Metric cards ── */}
       <View style={styles.section}>
         <View style={styles.grid}>
-          <MetricCard
-            label="Security Score"
-            value="92"
-            bgColor={colors.primary}
-            textColor={colors.onPrimary}
-          />
-          <MetricCard
-            label="Active Programs"
-            value={String(data.activePrograms)}
-            bgColor={GOLD}
-            textColor={colors.onSurface}
-          />
-          <MetricCard
-            label="Approval Rate"
-            value={`${data.approvalRate}%`}
-            bgColor={colors.primary}
-            textColor={colors.onPrimary}
-          />
-          <MetricCard
-            label="Projected Annual"
-            value={fmtK(data.projectedAnnual)}
-            bgColor={GOLD}
-            textColor={colors.onSurface}
-          />
+          <MetricCard label="Security Score"    value="92"                        variant="blue" />
+          <MetricCard label="Active Programs"   value={String(data.activePrograms)} variant="gold" />
+          <MetricCard label="Approval Rate"     value={`${data.approvalRate}%`}   variant="blue" />
+          <MetricCard label="Projected Annual"  value={fmtK(data.projectedAnnual)} variant="gold" />
         </View>
       </View>
 
@@ -223,8 +209,8 @@ export function ImpactDashboardScreen() {
         <MilestoneFunnelChart data={data.milestones} />
       </ChartCard>
 
-      {/* ── Automation timeline (original) ── */}
-      <View style={[styles.timelineCard, shadow]}>
+      {/* ── Automation timeline ── */}
+      <View style={styles.timelineCard}>
         <Text style={styles.timelineTitle}>Automation Timeline</Text>
         <TimelineItem
           text="SNAP Recertification: Auto-submit in 9 days"
@@ -232,29 +218,23 @@ export function ImpactDashboardScreen() {
         />
         <TimelineItem
           text="LIHEAP: Additional proof of address requested"
-          tone="warning"
+          tone="blue"
         />
         <TimelineItem
           text="Rent Relief: Eligibility window opens next Monday"
-          tone="primary"
+          tone="blue"
         />
       </View>
     </ScrollView>
   );
 }
 
-// ─── TimelineItem (unchanged from original) ───────────────────────────────────
+// ─── TimelineItem ─────────────────────────────────────────────────────────────
 
-type TimelineItemProps = { text: string; tone: "gold" | "warning" | "primary" };
+type TimelineItemProps = { text: string; tone: "gold" | "blue" };
 
 function TimelineItem({ text, tone }: TimelineItemProps) {
-  const dotColor =
-    tone === "gold"
-      ? colors.tertiaryContainer
-      : tone === "warning"
-      ? colors.badge.energy
-      : colors.primary;
-
+  const dotColor = tone === "gold" ? GOLD : BLUE;
   return (
     <View style={styles.timelineRow}>
       <View style={[styles.timelineDot, { backgroundColor: dotColor }]} />
@@ -268,7 +248,7 @@ function TimelineItem({ text, tone }: TimelineItemProps) {
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    backgroundColor: colors.surface,
+    backgroundColor: NAVY,
   },
   content: {
     paddingBottom: spacing[16],
@@ -277,27 +257,29 @@ const styles = StyleSheet.create({
 
   // Hero
   hero: {
-    backgroundColor: colors.primary,
+    backgroundColor: NAVY_MID,
     padding: spacing[12],
     paddingTop: spacing[12],
     borderBottomLeftRadius: radius.xl,
     borderBottomRightRadius: radius.xl,
     marginBottom: -20,
     gap: spacing[2],
+    borderBottomWidth: 2,
+    borderBottomColor: GOLD,
   },
   title: {
     ...typography.headlineMd,
-    color: colors.onPrimary,
+    color: GOLD,
+    fontWeight: "700",
   },
   subtitle: {
     ...typography.bodyMd,
-    color: colors.onPrimary,
-    opacity: 0.8,
+    color: ON_NAVY_M,
   },
 
   // Metric cards section
   section: {
-    backgroundColor: colors.surfaceContainerLow,
+    backgroundColor: NAVY,
     paddingTop: spacing[8] + 20,
     paddingHorizontal: spacing[4],
     paddingBottom: spacing[6],
@@ -311,21 +293,24 @@ const styles = StyleSheet.create({
 
   // Chart cards
   chartCard: {
-    backgroundColor: colors.surfaceContainerLowest,
+    backgroundColor: NAVY_MID,
     borderRadius: radius.xl,
     padding: spacing[6],
     marginHorizontal: spacing[4],
     marginTop: spacing[4],
     gap: spacing[2],
+    borderWidth: 1,
+    borderColor: "rgba(212,175,55,0.2)",
   },
   chartTitle: {
     ...typography.headlineSm,
-    color: colors.primary,
+    color: GOLD,
     fontSize: 16,
+    fontWeight: "600",
   },
   chartSubtitle: {
     ...typography.bodyMd,
-    color: colors.onSurfaceVariant,
+    color: ON_NAVY_M,
     fontSize: 12,
     marginBottom: 4,
   },
@@ -333,18 +318,21 @@ const styles = StyleSheet.create({
     marginTop: spacing[2],
   },
 
-  // Timeline (unchanged)
+  // Timeline
   timelineCard: {
-    backgroundColor: colors.surfaceContainerLowest,
+    backgroundColor: NAVY_MID,
     borderRadius: radius.xl,
     padding: spacing[6],
     marginHorizontal: spacing[4],
     marginTop: spacing[4],
     gap: spacing[6],
+    borderWidth: 1,
+    borderColor: "rgba(212,175,55,0.2)",
   },
   timelineTitle: {
     ...typography.headlineSm,
-    color: colors.primary,
+    color: GOLD,
+    fontWeight: "600",
   },
   timelineRow: {
     flexDirection: "row",
@@ -359,7 +347,7 @@ const styles = StyleSheet.create({
   },
   timelineItem: {
     ...typography.bodyMd,
-    color: colors.onSurfaceVariant,
+    color: ON_NAVY_M,
     flex: 1,
   },
 
@@ -373,15 +361,12 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     ...typography.bodyMd,
-    color: colors.onSurfaceVariant,
   },
   errorText: {
     ...typography.bodyMd,
-    color: colors.onSurface,
     textAlign: "center",
   },
   retryText: {
     ...typography.labelLg,
-    color: colors.primary,
   },
 });
