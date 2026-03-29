@@ -387,7 +387,7 @@ const styles = StyleSheet.create({
   modalCard: {
     width: "96%",
     maxWidth: 900,
-    backgroundColor: colors.surfaceContainerLowest,
+    backgroundColor: "#001f3f",
     borderRadius: radius.lg,
     borderWidth: 2,
     borderColor: "#D4AF37",
@@ -405,7 +405,7 @@ const styles = StyleSheet.create({
     borderColor: "#D4AF37",
     paddingHorizontal: spacing[3],
     color: "#D4AF37",
-    backgroundColor: colors.surface
+    backgroundColor: "#001f3f"
   },
   fieldLabel: {
     ...typography.labelLg,
@@ -420,10 +420,10 @@ const styles = StyleSheet.create({
     minHeight: 40,
     borderRadius: radius.md,
     borderWidth: 1,
-    borderColor: colors.outlineVariant,
+    borderColor: "#D4AF37",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.surface
+    backgroundColor: "#001f3f"
   },
   choiceButtonActive: {
     backgroundColor: "#D4AF37",
@@ -456,7 +456,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing[4],
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.primary,
+    backgroundColor: "#D4AF37",
+    borderWidth: 1,
+    borderColor: "#D4AF37",
     borderRadius: radius.md,
     marginLeft: "auto"
   },
@@ -465,6 +467,6 @@ const styles = StyleSheet.create({
   },
   submitButtonText: {
     ...typography.labelLg,
-    color: "#D4AF37"
+    color: "#001f3f"
   }
 });
