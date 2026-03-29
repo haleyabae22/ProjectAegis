@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+from google.genai import types
 from db_api.helper_funcs import add_program, retrieve_used_urls, get_database_data
 
 # Google ADK Imports
@@ -9,6 +10,11 @@ from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
 from google.genai.types import Content, Part
 load_dotenv()
+
+my_tool_config = types.ToolConfig(
+    function_calling_config=types.FunctionCallingConfig(mode="AUTO"),
+    include_server_side_tool_invocations=True
+)
 
 # --- Database Specialist ---
 db_agent = Agent(
@@ -35,28 +41,6 @@ db_agent = Agent(
 )
 
 
-# --- Scraper Agent ---
-scraper_agent = Agent(
-    name="scraper_agent",
-    model="gemini-3.1-flash-lite-preview",
-    description="Finds government funding programs and extracts data into JSON format.",
-    instruction="""
-        You are a web scraping and extraction agent. Your job is to find government funding programs.
-
-        CRITICAL WORKFLOW:
-        2. Use the `google_search` tool to find NEW government funding programs not in that list.
-        3. Extract the following information:
-           - "desc": Details of the gov funding program and who is eligible.
-           - "amount": How much money the program potentially offers.
-           - "rate": How often money is disbursed (monthly, yearly, or one-time).
-           - "url": The source URL of the web page scrapped from.
-        4. Output the extracted data STRICTLY in JSON format. Do not add markdown formatting outside the JSON.
-        only do 5 instances at a time
-    """,
-    tools=[google_search, AgentTool(db_agent)]
-)
-
-
 
 # --- Validator Agent ---
 validator_agent = Agent(
@@ -69,13 +53,44 @@ validator_agent = Agent(
 
         VALIDATION RULES:
         1. Check that the data contains all required keys: 'description', 'amount', 'disbursement_frequency', and 'url'.
-        2. Check that the 'amount' makes logical sense.
+        2. Check that the 'amount' makes logical sense. should be only a number
 
         ACTION:
         - If the data is VALID: Use the `call_db_agent` tool to pass the JSON data to the Database Specialist to save it. Return a success message.
         - If the data is INVALID: Do NOT save it. Return a detailed error message explaining what fields are missing or malformed.
     """,
     tools=[AgentTool(db_agent)]
+)
+
+# --- Scraper Agent ---
+# --- Scraper Agent ---
+scraper_agent = Agent(
+    name="scraper_agent",
+    model="gemini-3.1-flash-lite-preview",
+    description="Finds government funding programs and extracts data into JSON format.",
+    instruction="""
+        You are a web scraping and extraction agent. Your job is to find government funding programs, extract information
+        from them, and finally format it as a json
+
+        1. Using the database_specialist get the list of urls already scrapped and find new one, no redundant scraps
+        2. Find new urls that have not been scrapped already
+        3. While on the page describe the funding and who are eligible for it, and estimate how much money being disbursed  
+        from the page
+        4. Organize data into a list of jsons to give to validator_agent to check the results and state if format is valid
+
+        example format
+        {
+            "url": "www.example.com",
+            "desc": "Funding for low income families",
+            "amount": 300,
+            "rate": "monthly"
+        }
+    """,
+    tools=[google_search, AgentTool(db_agent), AgentTool(validator_agent)],
+    # THIS IS THE NEW LINE:
+    generate_content_config=types.GenerateContentConfig(
+        tool_config=my_tool_config
+    )
 )
 
 
@@ -137,4 +152,4 @@ async def run_orchestrator(query: str):
     print("=" * 50 + "\n")
 
 
-root_agent = db_agent
+root_agent = scraper_agent
