@@ -24,7 +24,7 @@ import { MilestoneFunnelChart } from "../components/MilestoneFunnelChart";
 
 // ─── Palette ─────────────────────────────────────────────────────────────────
 const NAVY      = "#001F3F";
-const NAVY_MID  = "#002E5C";   // slightly lighter navy for cards
+const NAVY_MID  = "#002E5C";
 const BLUE      = "#185FA5";
 const GOLD      = "#D4AF37";
 const GOLD_DIM  = "#9A7B1C";
@@ -64,10 +64,12 @@ const cardStyles = StyleSheet.create({
   },
   metricLabel: {
     ...typography.bodyMd,
-    fontSize: 11,
+    fontSize: 16,
+    fontWeight: "600",
   },
   metricValue: {
     ...typography.headlineMd,
+    fontSize: 28,
     fontWeight: "700",
   },
 });
@@ -303,13 +305,13 @@ const styles = StyleSheet.create({
   chartTitle: {
     ...typography.headlineSm,
     color: GOLD,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "600",
   },
   chartSubtitle: {
     ...typography.bodyMd,
     color: ON_NAVY_M,
-    fontSize: 12,
+    fontSize: 14,
     marginBottom: 4,
   },
   chartBody: {
@@ -331,6 +333,7 @@ const styles = StyleSheet.create({
     ...typography.headlineSm,
     color: GOLD,
     fontWeight: "600",
+    fontSize: 18,
   },
   timelineRow: {
     flexDirection: "row",
@@ -347,6 +350,7 @@ const styles = StyleSheet.create({
     ...typography.bodyMd,
     color: ON_NAVY_M,
     flex: 1,
+    fontSize: 15,
   },
 
   // Loading / Error
@@ -359,10 +363,12 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     ...typography.bodyMd,
+    fontSize: 16,
   },
   errorText: {
     ...typography.bodyMd,
     textAlign: "center",
+    fontSize: 16,
   },
   retryText: {
     ...typography.labelLg,
