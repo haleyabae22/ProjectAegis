@@ -35,16 +35,6 @@ db_agent = Agent(
 )
 
 
-# --- Tool Wrapper to let other agents call the DB Agent ---
-async def call_db_agent(request: str, tool_context: ToolContext) -> str:
-    """
-    Use this tool to ask the database specialist to retrieve used URLs, save valid data, or query existing records.
-    """
-    print(f"--- 🔄 A2A CALL: Routing to db_agent with request: '{request}' ---")
-    agent_tool = AgentTool(agent=db_agent)
-    return await agent_tool.run_async(args={"request": request}, tool_context=tool_context)
-
-
 # --- Scraper Agent ---
 scraper_agent = Agent(
     name="scraper_agent",
@@ -63,18 +53,9 @@ scraper_agent = Agent(
         4. Output the extracted data STRICTLY in JSON format. Do not add markdown formatting outside the JSON.
         only do 5 instances at a time
     """,
-    tools=[google_search, call_db_agent]
+    tools=[google_search, AgentTool(db_agent)]
 )
 
-
-# --- Tool Wrapper to let the Orchestrator call the Scraper Agent ---
-async def call_scraper_agent(request: str, tool_context: ToolContext) -> str:
-    """
-    Use this tool to command the scraper agent to find new funding programs and return them in JSON.
-    """
-    print("--- 🔄 A2A CALL: Routing to scraper_agent ---")
-    agent_tool = AgentTool(agent=scraper_agent)
-    return await agent_tool.run_async(args={"request": request}, tool_context=tool_context)
 
 
 # --- Validator Agent ---
@@ -94,18 +75,8 @@ validator_agent = Agent(
         - If the data is VALID: Use the `call_db_agent` tool to pass the JSON data to the Database Specialist to save it. Return a success message.
         - If the data is INVALID: Do NOT save it. Return a detailed error message explaining what fields are missing or malformed.
     """,
-    tools=[call_db_agent]
+    tools=[AgentTool(db_agent)]
 )
-
-
-# --- Tool Wrapper to let the Orchestrator call the Validator Agent ---
-async def call_validator_agent(request: str, tool_context: ToolContext) -> str:
-    """
-    Use this tool to pass scraped JSON data to the Validator. The Validator will check it and save it to the DB.
-    """
-    print("--- 🔄 A2A CALL: Routing to validator_agent ---")
-    agent_tool = AgentTool(agent=validator_agent)
-    return await agent_tool.run_async(args={"request": request}, tool_context=tool_context)
 
 
 # ==========================================
@@ -128,7 +99,7 @@ orchestrator_agent = Agent(
         2. If the user asks a direct question about what is currently IN THE DATABASE (e.g., "how many urls do we have?"):
            - Call `call_db_agent` directly to get the answer.
     """,
-    tools=[call_scraper_agent, call_validator_agent, call_db_agent]
+    tools=[AgentTool(scraper_agent), AgentTool(validator_agent), AgentTool(db_agent)]
 )
 
 
