@@ -445,7 +445,7 @@ const styles = StyleSheet.create({
   },
   contentSection: {
     width: "100%",
-    backgroundColor: "#001f3f",
+    backgroundColor: NAVY_DEEP,
     paddingHorizontal: spacing[4],
     paddingTop: spacing[8],
     paddingBottom: spacing[12],
@@ -492,7 +492,7 @@ const styles = StyleSheet.create({
   imagePlaceholder: {
     flex: 1,
     minHeight: 660,
-    backgroundColor: "#001f3f",
+    backgroundColor: NAVY_DEEP,
     borderRadius: radius.md,
     justifyContent: "center",
     alignItems: "center",
