@@ -25,3 +25,4 @@ db_testing/agents/__pycache__
 db_testing/db_api/__pycache__
 db_testing/scraper_api/__pycache__
 db_testing/programs.db
+*.pyc
