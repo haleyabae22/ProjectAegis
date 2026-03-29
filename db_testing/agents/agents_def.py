@@ -38,7 +38,7 @@ db_agent = Agent(
 # --- Scraper Agent ---
 scraper_agent = Agent(
     name="scraper_agent",
-    model="gemini-2.5-flash",
+    model="gemini-3.1-flash-lite-preview",
     description="Finds government funding programs and extracts data into JSON format.",
     instruction="""
         You are a web scraping and extraction agent. Your job is to find government funding programs.
@@ -61,7 +61,7 @@ scraper_agent = Agent(
 # --- Validator Agent ---
 validator_agent = Agent(
     name="validator_agent",
-    model="gemini-2.5-flash",
+    model="gemini-3.1-flash-lite-preview",
     description="Validates JSON data from the scraper and passes it to the database specialist.",
     instruction="""
         You are a strict data validation agent.
@@ -85,7 +85,7 @@ validator_agent = Agent(
 
 orchestrator_agent = Agent(
     name="orchestrator",
-    model="gemini-2.5-flash",
+    model="gemini-3.1-flash-lite-preview",
     description="Master agent that manages the scraping, validation, and database storage ecosystem.",
     instruction="""
         You are the master Orchestrator agent. Your job is to analyze the user's request and choose the best agent or workflow.
