@@ -20,4 +20,8 @@ This repository is organized for parallel frontend and backend development.
 
 ## Backend quick start
 
-- Scaffold and run your backend inside backend based on your team's stack
+1. cd backend
+2. python/python3 -m venv .venv
+3. source python/.venv/bin/activate
+4. pip install -r requirements.txt
+5. uvicorn main:app --host 127.0.0.1 --port 8000 --reload
